@@ -3,24 +3,36 @@
   height: 100vh;
   flex-direction: column;
 }
+
 .navcontent {
   width: 100%;
   height: 60px;
   background-color: #2a65b4;
   color: white;
+  position: fixed; /* Make the navbar fixed */
+  top: 0;
+  left: 0;
+  z-index: 50; /* Ensure it stays on top */
 }
 
 .main_content {
   display: flex;
   flex: 1;
+  margin-top: 60px; /* Add margin to account for the fixed navbar */
 }
 
 .menu {
-  width: 240px;
   flex-shrink: 0;
   background-color: white;
   color: black;
+  width: 300px;
+  height: calc(
+    100vh - 60px
+  ); /* Adjust height to account for the fixed navbar */
+  overflow-y: auto; /* Make the sidebar scrollable */
 }
+
 .childcontent {
   flex: 1;
+  overflow-y: auto; /* Make the main content scrollable */
 }

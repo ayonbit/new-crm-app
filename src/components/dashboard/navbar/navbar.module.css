@@ -6,7 +6,7 @@
 }
 .shopinfo {
   display: flex;
-  gap: 40px;
+  gap: 100px;
 }
 .logo {
   font-size: 20px;

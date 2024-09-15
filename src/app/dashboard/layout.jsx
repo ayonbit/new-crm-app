@@ -1,3 +1,4 @@
+"use client";
 //Dependencies
 import styles from "@/components/dashboard/dashboard.module.css";
 import Navbar from "@/components/dashboard/navbar/navbar";
