@@ -13,6 +13,10 @@ import { MdMenu, MdShoppingCart } from "react-icons/md";
 
 // Navbar component
 const Navbar = () => {
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="flex items-center justify-between p-2.5 px-5">
       <div className="flex gap-20">
@@ -44,12 +48,16 @@ const Navbar = () => {
 
       <div className="flex items-center gap-10">
         <div className="flex gap-5">
-          <LuRefreshCcw size={20} />
+          <LuRefreshCcw
+            size={20}
+            onClick={handleRefresh}
+            className="cursor-pointer"
+          />
           <IoMdNotifications size={20} />
         </div>
 
         <span className="flex gap-5 items-center">
-          <h3 className="text-white text-sm">Admin</h3>
+          <h3 className="text-white text-sm">Ayon Bit</h3>
           <FaUserCircle size={30} />
         </span>
       </div>
