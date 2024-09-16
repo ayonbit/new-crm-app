@@ -476,7 +476,7 @@ const Sidebar = ({ isCollapsed }) => {
   };
 
   return (
-    <div className=" bg-white text-black h-full overflow-y-auto">
+    <div className="bg-white text-black h-full overflow-y-auto">
       <ul className="p-2 space-y-2">
         {menuItems.map((cat) => (
           <li key={cat.title}>

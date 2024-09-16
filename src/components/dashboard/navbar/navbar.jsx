@@ -1,7 +1,5 @@
 "use client";
-//Dependencies
-import styles from "./navbar.module.css";
-//Icons
+// Dependencies
 import {
   FaCartPlus,
   FaMinus,
@@ -13,45 +11,45 @@ import { IoMdNotifications } from "react-icons/io";
 import { LuRefreshCcw } from "react-icons/lu";
 import { MdMenu, MdShoppingCart } from "react-icons/md";
 
-//Navbar component
+// Navbar component
 const Navbar = () => {
   return (
-    <div className={styles.container}>
-      <div className={styles.shopinfo}>
-        <div className={styles.logo}>
+    <div className="flex items-center justify-between p-2.5 px-5">
+      <div className="flex gap-20">
+        <div className="text-xl text-slate-300 font-bold italic">
           <h1>Smart Account</h1>
         </div>
-        <span className={styles.burgermenu}>
+        <span className="cursor-pointer">
           <MdMenu size={30} />
         </span>
-        <div className={styles.shoptitle}>
+        <div className="text-white font-semibold text-2xl uppercase">
           <h1>Patkelghata Builders</h1>
         </div>
-        <div className={styles.middleicons}>
-          <div className={styles.middleorder1}>
+        <div className="flex gap-5 text-white justify-center items-center">
+          <div className="flex gap-2">
             <MdShoppingCart size={15} />
             <FaRegMoneyBillAlt size={15} />
             <FaCartPlus size={15} />
           </div>
-          <div className={styles.middleorder2}>
+          <div className="flex gap-2">
             <FaCartPlus size={15} />
             <FaRegMoneyBillAlt size={15} />
           </div>
-          <div className={styles.middleorder3}>
+          <div className="flex gap-2">
             <FaPlus size={15} />
             <FaMinus size={15} />
           </div>
         </div>
       </div>
 
-      <div className={styles.rightmenu}>
-        <div className={styles.rightmenuicons}>
+      <div className="flex items-center gap-10">
+        <div className="flex gap-5">
           <LuRefreshCcw size={20} />
           <IoMdNotifications size={20} />
         </div>
 
-        <span className={styles.usertitle}>
-          <h3>Admin</h3>
+        <span className="flex gap-5 items-center">
+          <h3 className="text-white text-sm">Admin</h3>
           <FaUserCircle size={30} />
         </span>
       </div>
