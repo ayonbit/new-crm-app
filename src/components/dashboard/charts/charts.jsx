@@ -30,7 +30,7 @@ const data = [
 
 const Charts = () => {
   return (
-    <Card className="bg-white text-black my-4 shadow-lg shadow-slate-400">
+    <Card className="my-4">
       <CardHeader>
         <CardTitle className="text-center font-bold">
           Financial Overview

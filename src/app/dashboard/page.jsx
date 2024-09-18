@@ -82,7 +82,7 @@ const DashboardPage = () => {
         {cardData.map((card, index) => (
           <Card
             key={index}
-            className={`${card.bgColor} text-white shadow-sm shadow-slate-400`}
+            className={`${card.bgColor} text-white`}
           >
             <CardHeader>
               <CardTitle className="text-center font-bold">

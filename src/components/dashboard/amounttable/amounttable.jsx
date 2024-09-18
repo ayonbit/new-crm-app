@@ -30,7 +30,7 @@ const dashboardtable = [
 
 const Amounttable = () => {
   return (
-    <Card className="bg-white text-black shadow-lg shadow-slate-400">
+    <Card className="bg-white text-black ">
       <CardHeader>
         <CardTitle className="text-center font-bold">
           Available Balance
