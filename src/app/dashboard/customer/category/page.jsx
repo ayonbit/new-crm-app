@@ -145,7 +145,9 @@ const CustomerCategory = () => {
                 </TableRow>
               ))}
             </TableBody>
-            <TableCaption>A list of your recent Quotations.</TableCaption>
+            <TableCaption>
+              A list of your recent Customer Category.
+            </TableCaption>
           </Table>
         </CardContent>
         <CardFooter>

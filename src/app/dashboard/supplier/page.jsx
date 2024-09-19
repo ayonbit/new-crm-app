@@ -1,5 +1,5 @@
 "use client";
-import Createcustomer from "@/components/customer/create/createcustomer";
+import Createsupplier from "@/components/customer/create/createsupplier";
 //Dependencies
 import Pagination from "@/components/pagination/pagination";
 import Search from "@/components/search/search";
@@ -37,15 +37,16 @@ import {
 //Internal Dependencies
 
 //Customer List Data
-const customerListData = [
+const supplierListData = [
   {
-    customerCode: "#C001",
-    customerName: "John Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive"
+    supplierCode: "#Sup001",
+    supplierName: "X-Ceramics",
+    supplierCompanyName: "John Doe",
+    supplierEmail: "johndoe@jon.com",
+    supplierPhone: "1234567890",
+    supplierAddress: "1234 Main Street",
+    currentBalance: "-26000.00",
+
     Action: [
       { view: <FaEye /> },
       { edit: <FaEdit /> },
@@ -53,13 +54,14 @@ const customerListData = [
     ],
   },
   {
-    customerCode: "#C002",
-    customerName: "Doe John",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "100.00",
-    Status: "Inactive", // or "Active",
+    supplierCode: "#Sup002",
+    supplierName: "X-Monalisa",
+    supplierCompanyName: "John Doe",
+    supplierEmail: "johndoe@jon.com",
+    supplierPhone: "1234567890",
+    supplierAddress: "1234 Main Street",
+    currentBalance: "4900000.00",
+
     Action: [
       { view: <FaEye /> },
       { edit: <FaEdit /> },
@@ -67,13 +69,14 @@ const customerListData = [
     ],
   },
   {
-    customerCode: "#C003",
-    customerName: "Alice Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "215.00",
-    Status: "Inactive", // or "Active",
+    supplierCode: "#Sup002",
+    supplierName: "X-Monika",
+    supplierCompanyName: "John Doe",
+    supplierEmail: "johndoe@jon.com",
+    supplierPhone: "1234567890",
+    supplierAddress: "1234 Main Street",
+    currentBalance: "49000.00",
+
     Action: [
       { view: <FaEye /> },
       { edit: <FaEdit /> },
@@ -81,55 +84,14 @@ const customerListData = [
     ],
   },
   {
-    customerCode: "#C004",
-    customerName: "Bob Alice",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C005",
-    customerName: "Bov Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "23658.00",
-    Status: "Inactive", // or "Active",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C006",
-    customerName: "Nova Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C007",
-    customerName: "John Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
+    supplierCode: "#Sup002",
+    supplierName: "Sun Power Ltd",
+    supplierCompanyName: "John Doe",
+    supplierEmail: "johndoe@jon.com",
+    supplierPhone: "1234567890",
+    supplierAddress: "1234 Main Street",
+    currentBalance: "26580001250.00",
+
     Action: [
       { view: <FaEye /> },
       { edit: <FaEdit /> },
@@ -137,20 +99,20 @@ const customerListData = [
     ],
   },
 ];
-//Customer List Page
-const CustomerList = () => {
+//Manage Supplier Page
+const ManageSupplierPage = () => {
   return (
     <div className="p-2 h-screen">
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <div className="flex items-center">
-              <FaListOl size={20} className="mr-2" /> Customer List:
+              <FaListOl size={20} className="mr-2" /> Supplier List:
             </div>
             <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
               <Search />
               <Button size="sm" variant="custom">
-                <FaFileExport size={16} className="mr-2" /> Export Customer
+                <FaFileExport size={16} className="mr-2" /> Export Supplier
               </Button>
               <Dialog>
                 <DialogTrigger asChild>
@@ -160,64 +122,61 @@ const CustomerList = () => {
                     className="flex items-center space-x-2"
                   >
                     <FaPlus size={10} />
-                    <span>Add New Customer</span>
+                    <span>Add New Supplier</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="p-6 max-w-2xl w-full ">
                   <DialogTitle className="text-center font-bold">
-                    Add New Customer
+                    Add New Supplier
                     <hr className="mt-2 " />
                   </DialogTitle>
-                  <Createcustomer />
+                  <Createsupplier />
                 </DialogContent>
               </Dialog>
             </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="border">
             <TableHeader>
               <TableRow>
-                <TableHead>Customer Code</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Current Balance</TableHead>
-                <TableHead>Default</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead className="text-black font-bold">
+                  Supplier Code
+                </TableHead>
+                <TableHead className="text-black font-bold">Name</TableHead>
+                <TableHead className="text-black font-bold">
+                  Company Name
+                </TableHead>
+                <TableHead className="text-black font-bold">Email</TableHead>
+                <TableHead className="text-black font-bold">Phone</TableHead>
+                <TableHead className="text-black font-bold">Address</TableHead>
+                <TableHead className="text-black font-bold">
+                  Current Balance
+                </TableHead>
+                <TableHead className="text-black font-bold">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customerListData.map((cat, index) => (
+              {supplierListData.map((cat, index) => (
                 <TableRow className="" key={index}>
                   <TableCell className="text-center">
-                    {cat.customerCode}
+                    {cat.supplierCode}
                   </TableCell>
                   <TableCell className="text-left ">
-                    {cat.customerName}
+                    {cat.supplierCompanyName}
                   </TableCell>
-                  <TableCell>{cat.customerEmail}</TableCell>
+                  <TableCell>{cat.supplierName}</TableCell>
                   <TableCell className="text-center">
-                    {cat.customerPhone}
+                    {cat.supplierEmail}
                   </TableCell>
                   <TableCell className="text-center">
-                    {cat.customerAddress}
+                    {cat.supplierPhone}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {cat.supplierAddress}
                   </TableCell>
                   <TableCell className="text-center">
                     {cat.currentBalance}
-                  </TableCell>
-
-                  <TableCell className="text-center">
-                    <span
-                      className={`${
-                        cat.Status === "Active"
-                          ? "bg-green-800 text-white"
-                          : "bg-red-600 text-white"
-                      } px-1 rounded`}
-                    >
-                      {cat.Status}
-                    </span>
                   </TableCell>
                   <TableCell>
                     <Button variant="view" size="icon">
@@ -233,7 +192,7 @@ const CustomerList = () => {
                 </TableRow>
               ))}
             </TableBody>
-            <TableCaption>A list of your recent Customer.</TableCaption>
+            <TableCaption>A list of your recent Supplier.</TableCaption>
           </Table>
         </CardContent>
         <CardFooter>
@@ -244,4 +203,4 @@ const CustomerList = () => {
   );
 };
 
-export default CustomerList;
+export default ManageSupplierPage;

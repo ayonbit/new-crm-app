@@ -47,7 +47,7 @@ const menuItems = [
       },
       {
         title: "Add Quotations",
-        path: "/dashboard/quotations/create",
+        path: "/dashboard/quotations/add",
         icons: <FaPlus />,
       },
     ],
@@ -59,7 +59,7 @@ const menuItems = [
     dropdown: [
       {
         title: "New Sale",
-        path: "/dashboard/sales/create",
+        path: "/dashboard/sales/add",
         icons: <FaPlus />,
       },
       {
@@ -96,7 +96,7 @@ const menuItems = [
       },
       {
         title: "Indidual Purchase",
-        path: "/dashboard/purchase/create",
+        path: "/dashboard/purchase/add",
         icons: <FaPlus />,
       },
       {
@@ -242,7 +242,7 @@ const menuItems = [
       },
       {
         title: "Add",
-        path: "/dashboard/product/create",
+        path: "/dashboard/product/add",
         icons: <FaPlus />,
       },
       {
@@ -339,7 +339,7 @@ const menuItems = [
       },
       {
         title: "Add Supplier",
-        path: "/dashboard/supplier/create",
+        path: "/dashboard/supplier/add",
         icons: <FaPlus />,
       },
       {
@@ -361,7 +361,7 @@ const menuItems = [
       },
       {
         title: "Add Customer",
-        path: "/dashboard/customer/create",
+        path: "/dashboard/customer/add",
         icons: <FaPlus />,
       },
       {

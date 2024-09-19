@@ -1,6 +1,6 @@
 "use client";
-import Pagination from "@/components/pagination/pagination";
 //Dependencies
+import Pagination from "@/components/pagination/pagination";
 
 import Search from "@/components/search/search";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import {
+  FaEdit,
+  FaEye,
+  FaFileExport,
+  FaListOl,
+  FaPlus,
+  FaTrash,
+} from "react-icons/fa";
 //table data
 const quotationdata = [
   {
@@ -146,26 +153,45 @@ const quotationdata = [
   },
 ];
 
+import { useRouter } from "next/navigation";
+//QUOTATION PAGE
 const Quotations = () => {
+  const router = useRouter();
+
+  //For Quotation List Page Redirection
+  const handlequotionRedirect = () => {
+    router.push("/dashboard/quotations/add");
+  };
+
   return (
     <div className="p-2 h-screen">
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            Quotations List:
-            <div className="flex-grow flex justify-end mr-8">
-              <Search />
+            <div className="flex items-center">
+              <FaListOl size={20} className="mr-2" /> Quotation List:
             </div>
-            <Button size="sm" variant="custom">
-              <FaEye size={20} className="mr-2" /> Add Quotations
-            </Button>
+            <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
+              <Search />
+              <Button size="sm" variant="custom">
+                <FaFileExport size={16} className="mr-2" /> Export List
+              </Button>
+              <Button
+                size="sm"
+                variant="custom"
+                onClick={handlequotionRedirect}
+              >
+                <FaPlus size={10} className="mr-2" />
+                Add Quotation
+              </Button>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead >Date</TableHead>
+                <TableHead>Date</TableHead>
                 <TableHead>Reference</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead>Total Payable</TableHead>
