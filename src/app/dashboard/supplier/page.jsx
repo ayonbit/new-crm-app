@@ -1,5 +1,5 @@
 "use client";
-import Createsupplier from "@/components/customer/create/createsupplier";
+import Createsupplier from "@/components/supplier/create/createsupplier";
 //Dependencies
 import Pagination from "@/components/pagination/pagination";
 import Search from "@/components/search/search";

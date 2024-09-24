@@ -1,6 +1,6 @@
 "use client";
 // Dependencies
-import Createsupplier from "@/components/customer/create/createsupplier";
+import Createsupplier from "@/components/supplier/create/createsupplier";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,7 @@
 "use client";
+import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
+
 // Dependencies
-import AddCustomer from "@/components/customer/category/addcustomer";
 import Pagination from "@/components/pagination/pagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCaption,
@@ -20,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { FaEdit, FaEye, FaListOl, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
 // Category data
 const CustomerCategoryData = [
@@ -92,7 +99,25 @@ const CustomerCategory = () => {
             <div className="flex items-center">
               <FaListOl className="mr-2" /> Customer Category
             </div>
-            <AddCustomer />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="custom"
+                  className="flex items-center space-x-2"
+                >
+                  <FaPlus size={10} />
+                  <span>Create New</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="p-6 max-w-2xl w-full ">
+                <DialogTitle className="text-center font-bold">
+                  Add New Category
+                  <hr className="mt-2 " />
+                </DialogTitle>
+                <AddCustomerCategory />
+              </DialogContent>
+            </Dialog>
           </CardTitle>
         </CardHeader>
         <CardContent>
