@@ -1,6 +1,4 @@
-"use client";
-import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
-
+"use server";
 // Dependencies
 import Pagination from "@/components/pagination/pagination";
 import { Button } from "@/components/ui/button";
@@ -26,71 +24,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
-// Category data
-const CustomerCategoryData = [
-  {
-    SL: "1",
-    CategoryName: "New Customer",
-    Description: "This is for new customer",
-    AmountOf: "0.00",
-    Amount: "0.00",
-    Type: "Amount", // or "Percent"
-    Status: "Active", // or "Inactive"
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    SL: "2",
-    CategoryName: "Wholesale",
-    Description: "This is for Wholesale Customer",
-    AmountOf: "0.00",
-    Amount: "0.00",
-    Type: "Percent", // or "Amount"
-    Status: "Inactive", // or "Active"
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    SL: "3",
-    CategoryName: "Retail",
-    Description: "This is for Retail Customer",
-    AmountOf: "0.00",
-    Amount: "0.00",
-    Type: "Amount", // or "Percent"
-    Status: "Active", // or "Inactive"
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    SL: "4",
-    CategoryName: "Credit Clients",
-    Description: "This is for Credit Clients",
-    AmountOf: "0.00",
-    Amount: "0.00",
-    Type: "Percent", // or "Amount"
-    Status: "Inactive", // or "Active"
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-];
+//Internal import
+import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
+
+import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 
 // Category page
-const CustomerCategory = () => {
+const CustomerCategoryPage = async () => {
+  const category = await fetchCustomerCategory();
+  //console.log(category);
   return (
     <div className="p-2 h-screen">
       <Card>
@@ -122,7 +66,7 @@ const CustomerCategory = () => {
         </CardHeader>
         <CardContent>
           <Table>
-            <TableHeader>
+            <TableHeader className="font-bold">
               <TableRow>
                 <TableHead>SL</TableHead>
                 <TableHead>Category Name</TableHead>
@@ -135,9 +79,9 @@ const CustomerCategory = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {CustomerCategoryData.map((cat, index) => (
+              {category.map((cat, index) => (
                 <TableRow className="" key={index}>
-                  <TableCell className="text-center">{cat.SL}</TableCell>
+                  <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell className="text-left ">
                     {cat.CategoryName}
                   </TableCell>
@@ -158,13 +102,14 @@ const CustomerCategory = () => {
                   </TableCell>
                   <TableCell>
                     <Button variant="view" size="icon">
-                      {cat.Action.find((action) => action.view)?.view}
+                      <FaEye />
                     </Button>
                     <Button variant="edit" size="icon">
-                      {cat.Action.find((action) => action.edit)?.edit}
+                      <FaEdit />
                     </Button>
+                    <input type="hidden" name="id" value={category.id} />
                     <Button variant="delete" size="icon">
-                      {cat.Action.find((action) => action.delete)?.delete}
+                      <FaTrash />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -183,4 +128,4 @@ const CustomerCategory = () => {
   );
 };
 
-export default CustomerCategory;
+export default CustomerCategoryPage;

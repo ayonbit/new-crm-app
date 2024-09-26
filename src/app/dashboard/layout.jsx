@@ -6,6 +6,7 @@ import Sidebar from "@/components/dashboard/sidebar/sidebar";
 
 const Layout = ({ children }) => {
   return (
+    
     <div className="flex flex-col h-screen">
       <div className="w-full h-12 bg-[#2a65b4] text-white fixed top-0 left-0 z-50">
         <Navbar />

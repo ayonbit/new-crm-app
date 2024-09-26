@@ -1,5 +1,5 @@
-import { Toaster } from "@/components/ui/toaster";
 import { JetBrains_Mono } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 //fonts config
 const jetbrainsMono = JetBrains_Mono({
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={jetbrainsMono.variable}>
         {children}
-        <Toaster />
+        <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       </body>
     </html>
   );
