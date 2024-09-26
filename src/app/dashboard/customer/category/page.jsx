@@ -1,5 +1,6 @@
-"use server";
+"use client";
 // Dependencies
+
 import Pagination from "@/components/pagination/pagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,11 +31,19 @@ import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
 
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
+import { useEffect, useState } from "react";
 
 // Category page
-const CustomerCategoryPage = async () => {
-  const category = await fetchCustomerCategory();
-  //console.log(category);
+const CustomerCategoryPage = () => {
+  const [categoryData, setcategoryData] = useState([]);
+  useEffect(() => {
+    const fetchcatdata = async () => {
+      const category = await fetchCustomerCategory();
+      setcategoryData(category);
+    };
+    fetchcatdata();
+  }, []);
+
   return (
     <div className="p-2 h-screen">
       <Card>
@@ -65,49 +74,80 @@ const CustomerCategoryPage = async () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader className="font-bold">
+          <Table className="min-w-full divide-y divide-gray-200 border border-gray-300">
+            <TableHeader className="bg-gray-50">
               <TableRow>
-                <TableHead>SL</TableHead>
-                <TableHead>Category Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Amount Of</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  SL
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Category Name
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Description
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Amount Of
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Amount
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Type
+                </TableHead>
+                <TableHead className="px-2 py-2 text-center text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Status
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Created
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Action
+                </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {category.map((cat, index) => (
-                <TableRow className="" key={index}>
-                  <TableCell className="text-center">{index + 1}</TableCell>
-                  <TableCell className="text-left ">
+            <TableBody className="bg-white divide-y divide-gray-200">
+              {categoryData.map((cat, index) => (
+                <TableRow key={index} className="hover:bg-gray-100">
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-center border border-gray-300">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
                     {cat.CategoryName}
                   </TableCell>
-                  <TableCell>{cat.Description}</TableCell>
-                  <TableCell className="text-center">{cat.AmountOf}</TableCell>
-                  <TableCell className="text-center">{cat.Amount}</TableCell>
-                  <TableCell className="text-left">{cat.Type}</TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
+                    {cat.Description}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 text-center border border-gray-300">
+                    {cat.AmountOf}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 text-center border border-gray-300">
+                    {cat.Amount}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
+                    {cat.Type}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-center border border-gray-300">
                     <span
                       className={`${
                         cat.Status === "Active"
-                          ? "bg-green-800 text-white"
-                          : "bg-red-600 text-white"
-                      } px-1 rounded`}
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      } px-2 inline-flex text-xs leading-5 font-semibold rounded-full`}
                     >
                       {cat.Status}
                     </span>
                   </TableCell>
-                  <TableCell>
-                    <Button variant="view" size="icon">
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
+                    {new Date(cat.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium border border-gray-300">
+                    <Button variant="view" size="icon" className="mr-2">
                       <FaEye />
                     </Button>
-                    <Button variant="edit" size="icon">
+                    <Button variant="edit" size="icon" className="mr-2">
                       <FaEdit />
                     </Button>
-                    <input type="hidden" name="id" value={category.id} />
                     <Button variant="delete" size="icon">
                       <FaTrash />
                     </Button>
@@ -115,7 +155,7 @@ const CustomerCategoryPage = async () => {
                 </TableRow>
               ))}
             </TableBody>
-            <TableCaption>
+            <TableCaption className=" text-black">
               A list of your recent Customer Category.
             </TableCaption>
           </Table>
