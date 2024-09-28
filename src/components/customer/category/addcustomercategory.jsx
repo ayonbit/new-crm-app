@@ -15,7 +15,7 @@ const categorySchema = yup.object().shape({
   CategoryName: yup
     .string()
     .min(3, "Category name must be at least 3 characters")
-    .max(20, "Category name must be at most 20 characters")
+
     .required("Category name is required"),
   Description: yup.string(),
   Amount: yup

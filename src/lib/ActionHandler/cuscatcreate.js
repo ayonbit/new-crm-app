@@ -1,5 +1,6 @@
 "use server";
 // Dependencies
+import validator from "validator";
 import CustomerCategory from "../Model/cuscatmod";
 import { connectToDB } from "../dbcon";
 
@@ -9,21 +10,35 @@ export const CreateCategoryHandler = async (formData) => {
     formData;
 
   try {
+    // Sanitize inputs
+    const sanitizedCategoryName = validator.escape(
+      validator.trim(CategoryName)
+    );
+    const sanitizedDescription = validator.escape(validator.trim(Description));
+    const sanitizedAmount = validator.toFloat(Amount.toString());
+    const sanitizedAmountOf = validator.escape(
+      validator.trim(AmountOf.toString())
+    );
+    const sanitizedType = validator.escape(validator.trim(Type));
+    const sanitizedStatus = validator.escape(validator.trim(Status));
+
     // Connect to the database
     await connectToDB();
 
     // Validation
-    const existingCategory = await CustomerCategory.findOne({ CategoryName });
+    const existingCategory = await CustomerCategory.findOne({
+      CategoryName: sanitizedCategoryName,
+    });
     if (existingCategory) {
       return { success: false, message: "Category already exists" };
     }
     const newCategory = new CustomerCategory({
-      CategoryName,
-      Description,
-      AmountOf,
-      Amount,
-      Type,
-      Status,
+      CategoryName: sanitizedCategoryName,
+      Description: sanitizedDescription,
+      Amount: sanitizedAmount,
+      AmountOf: sanitizedAmountOf,
+      Type: sanitizedType,
+      Status: sanitizedStatus,
     });
 
     // Save the new category

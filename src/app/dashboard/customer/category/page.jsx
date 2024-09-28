@@ -29,12 +29,12 @@ import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
 //Internal import
 import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
-
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 import { useEffect, useState } from "react";
 
 // Category page
 const CustomerCategoryPage = () => {
+  //For category fetch
   const [categoryData, setcategoryData] = useState([]);
   useEffect(() => {
     const fetchcatdata = async () => {

@@ -1,6 +1,6 @@
 "use client";
-import Createcustomer from "@/components/customer/create/createcustomer";
-//Dependencies
+
+// Dependencies
 import Pagination from "@/components/pagination/pagination";
 import Search from "@/components/search/search";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useEffect, useState } from "react";
 import {
   FaEdit,
   FaEye,
@@ -34,111 +35,28 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-//Internal Dependencies
 
-//Customer List Data
-const customerListData = [
-  {
-    customerCode: "#C001",
-    customerName: "John Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive"
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C002",
-    customerName: "Doe John",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "100.00",
-    Status: "Inactive", // or "Active",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C003",
-    customerName: "Alice Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "215.00",
-    Status: "Inactive", // or "Active",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C004",
-    customerName: "Bob Alice",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C005",
-    customerName: "Bov Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "23658.00",
-    Status: "Inactive", // or "Active",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C006",
-    customerName: "Nova Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    customerCode: "#C007",
-    customerName: "John Doe",
-    customerEmail: "johndoe@jon.com",
-    customerPhone: "1234567890",
-    customerAddress: "1234 Main Street",
-    currentBalance: "0.00",
-    Status: "Active", // or "Inactive",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-];
-//Customer List Page
+// Internal Dependencies
+import Createcustomer from "@/components/customer/create/createcustomer";
+import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
+
+// Customer List Page
 const CustomerList = () => {
+  // For Customer Fetch
+  const [customerData, setCustomerData] = useState([]);
+
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      try {
+        const customer = await fetchCustomer();
+        setCustomerData(customer);
+      } catch (error) {
+        console.error("Error fetching customer data:", error.message);
+      }
+    };
+    fetchCustomerData();
+  }, []);
+
   return (
     <div className="p-2 h-screen">
       <Card>
@@ -147,9 +65,13 @@ const CustomerList = () => {
             <div className="flex items-center">
               <FaListOl size={20} className="mr-2" /> Customer List:
             </div>
-            <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
+            <div className="flex-grow flex justify-end items-center space-x-4">
               <Search />
-              <Button size="sm" variant="custom">
+              <Button
+                size="sm"
+                variant="custom"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
                 <FaFileExport size={16} className="mr-2" /> Export Customer
               </Button>
               <Dialog>
@@ -157,16 +79,16 @@ const CustomerList = () => {
                   <Button
                     size="sm"
                     variant="custom"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                   >
                     <FaPlus size={10} />
                     <span>Add New Customer</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="p-6 max-w-2xl w-full ">
+                <DialogContent className="p-6 max-w-2xl w-full">
                   <DialogTitle className="text-center font-bold">
                     Add New Customer
-                    <hr className="mt-2 " />
+                    <hr className="mt-2" />
                   </DialogTitle>
                   <Createcustomer />
                 </DialogContent>
@@ -175,65 +97,96 @@ const CustomerList = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
+          <Table className="min-w-full divide-y divide-gray-200 border border-gray-300">
+            <TableHeader className="bg-gray-50">
               <TableRow>
-                <TableHead>Customer Code</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Current Balance</TableHead>
-                <TableHead>Default</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Customer Code
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Name
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Email
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Phone
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Address
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Category
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Current Balance
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Date
+                </TableHead>
+                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Status
+                </TableHead>
+                <TableHead className="px-1 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                  Action
+                </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {customerListData.map((cat, index) => (
-                <TableRow className="" key={index}>
-                  <TableCell className="text-center">
-                    {cat.customerCode}
+            <TableBody className="bg-white divide-y divide-gray-200">
+              {customerData.map((cus, index) => (
+                <TableRow key={index} className="hover:bg-gray-100">
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.customerCode}
                   </TableCell>
-                  <TableCell className="text-left ">
-                    {cat.customerName}
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.name}
                   </TableCell>
-                  <TableCell>{cat.customerEmail}</TableCell>
-                  <TableCell className="text-center">
-                    {cat.customerPhone}
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.email}
                   </TableCell>
-                  <TableCell className="text-center">
-                    {cat.customerAddress}
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.phone}
                   </TableCell>
-                  <TableCell className="text-center">
-                    {cat.currentBalance}
+                  <TableCell className="px-2 py-2 whitespace-pre-line text-sm text-gray-800 text-center border border-gray-300">
+                    {cus.address}
                   </TableCell>
-
-                  <TableCell className="text-center">
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.category}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {cus.openingBalance}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    {new Date(cus.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm  border border-gray-300 overflow-hidden overflow-ellipsis">
                     <span
                       className={`${
-                        cat.Status === "Active"
-                          ? "bg-green-800 text-white"
-                          : "bg-red-600 text-white"
-                      } px-1 rounded`}
+                        cus.Status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      } px-2 inline-flex text-xs leading-5 font-semibold rounded-full`}
                     >
-                      {cat.Status}
+                      {cus.Status}
                     </span>
                   </TableCell>
-                  <TableCell>
-                    <Button variant="view" size="icon">
-                      {cat.Action.find((action) => action.view)?.view}
+                  <TableCell className=" text-sm font-medium border border-gray-300">
+                    <Button variant="view" size="icon" className="mr-1">
+                      <FaEye />
                     </Button>
-                    <Button variant="edit" size="icon">
-                      {cat.Action.find((action) => action.edit)?.edit}
+                    <Button variant="edit" size="icon" className="mr-1">
+                      <FaEdit />
                     </Button>
                     <Button variant="delete" size="icon">
-                      {cat.Action.find((action) => action.delete)?.delete}
+                      <FaTrash />
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-            <TableCaption>A list of your recent Customer.</TableCaption>
+            <TableCaption className="text-black">
+              A list of your recent Customer.
+            </TableCaption>
           </Table>
         </CardContent>
         <CardFooter>
