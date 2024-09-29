@@ -44,14 +44,18 @@ import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
 const CustomerList = () => {
   // For Customer Fetch
   const [customerData, setCustomerData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
       try {
+        setLoading(true);
         const customer = await fetchCustomer();
         setCustomerData(customer);
       } catch (error) {
         console.error("Error fetching customer data:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCustomerData();
@@ -97,97 +101,103 @@ const CustomerList = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table className="min-w-full divide-y divide-gray-200 border border-gray-300">
-            <TableHeader className="bg-gray-50">
-              <TableRow>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Customer ID
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Name
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Email
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Phone
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Address
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Category
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Current Balance
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Date
-                </TableHead>
-                <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Status
-                </TableHead>
-                <TableHead className="px-1 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Action
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="bg-white divide-y divide-gray-200">
-              {customerData.map((cus, index) => (
-                <TableRow key={index} className="hover:bg-gray-100">
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.customerCode}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.name}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.email}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.phone}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-pre-line text-sm text-gray-800 text-center border border-gray-300">
-                    {cus.address}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.category}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {cus.openingBalance}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
-                    {new Date(cus.createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell className="px-2 py-2 whitespace-nowrap text-sm  border border-gray-300 overflow-hidden overflow-ellipsis">
-                    <span
-                      className={`${
-                        cus.Status === "Active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      } px-2 inline-flex text-xs leading-5 font-semibold rounded-full`}
-                    >
-                      {cus.Status}
-                    </span>
-                  </TableCell>
-                  <TableCell className=" flex items-center  text-sm font-medium  border-gray-300">
-                    <Button variant="view" size="icon" className="mr-1">
-                      <FaEye size={12} />
-                    </Button>
-                    <Button variant="edit" size="icon" className="mr-1">
-                      <FaEdit size={12} />
-                    </Button>
-                    <Button variant="delete" size="icon">
-                      <FaTrash size={12} />
-                    </Button>
-                  </TableCell>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="loader">Loading...</div>
+            </div>
+          ) : (
+            <Table className="min-w-full divide-y divide-gray-200 border border-gray-300">
+              <TableHeader className="bg-gray-50">
+                <TableRow>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Customer ID
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Name
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Email
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Phone
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Address
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Category
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Current Balance
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Date
+                  </TableHead>
+                  <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Status
+                  </TableHead>
+                  <TableHead className="px-1 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
+                    Action
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableCaption className="text-black">
-              A list of your recent Customer.
-            </TableCaption>
-          </Table>
+              </TableHeader>
+              <TableBody className="bg-white divide-y divide-gray-200">
+                {customerData.map((cus, index) => (
+                  <TableRow key={index} className="hover:bg-gray-100">
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.customerCode}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.name}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.email}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.phone}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-pre-line text-sm text-gray-800 text-center border border-gray-300">
+                      {cus.address}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.category}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {cus.openingBalance}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                      {new Date(cus.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm  border border-gray-300 overflow-hidden overflow-ellipsis">
+                      <span
+                        className={`${
+                          cus.Status === "Active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        } px-2 inline-flex text-xs leading-5 font-semibold rounded-full`}
+                      >
+                        {cus.Status}
+                      </span>
+                    </TableCell>
+                    <TableCell className=" flex items-center  text-sm font-medium  border-gray-300">
+                      <Button variant="view" size="icon" className="mr-1">
+                        <FaEye size={12} />
+                      </Button>
+                      <Button variant="edit" size="icon" className="mr-1">
+                        <FaEdit size={12} />
+                      </Button>
+                      <Button variant="delete" size="icon">
+                        <FaTrash size={12} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableCaption className="text-black">
+                A list of your recent Customer.
+              </TableCaption>
+            </Table>
+          )}
         </CardContent>
         <CardFooter>
           <Pagination />
