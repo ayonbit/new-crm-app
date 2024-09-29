@@ -101,7 +101,7 @@ const CustomerList = () => {
             <TableHeader className="bg-gray-50">
               <TableRow>
                 <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                  Customer Code
+                  Customer ID
                 </TableHead>
                 <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
                   Name
@@ -170,15 +170,15 @@ const CustomerList = () => {
                       {cus.Status}
                     </span>
                   </TableCell>
-                  <TableCell className=" text-sm font-medium border border-gray-300">
+                  <TableCell className=" flex items-center  text-sm font-medium  border-gray-300">
                     <Button variant="view" size="icon" className="mr-1">
-                      <FaEye />
+                      <FaEye size={12} />
                     </Button>
                     <Button variant="edit" size="icon" className="mr-1">
-                      <FaEdit />
+                      <FaEdit size={12} />
                     </Button>
                     <Button variant="delete" size="icon">
-                      <FaTrash />
+                      <FaTrash size={12} />
                     </Button>
                   </TableCell>
                 </TableRow>

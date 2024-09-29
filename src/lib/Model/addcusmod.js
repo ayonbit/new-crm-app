@@ -41,6 +41,10 @@ const customerSchema = new mongoose.Schema(
       enum: ["true", "false"],
       required: [true, "Set Default is required"],
     },
+    customerCode: { 
+      type: String, 
+      required: true, 
+      unique: true },
   },
   {
     timestamps: true,

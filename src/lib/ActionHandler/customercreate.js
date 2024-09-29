@@ -47,8 +47,18 @@ export const CreateCustomerHandler = async (formData) => {
       return { success: false, message: "Invalid value for setDefault" };
     }
 
+    // Generate customerId
+    const lastCustomer = await Customer.findOne().sort({ createdAt: -1 });
+    let newCustomerCode = "CUS#001";
+    if (lastCustomer && lastCustomer.customerCode) {
+      const lastCode = parseInt(lastCustomer.customerCode.split("#")[1], 10);
+      const newCode = lastCode + 1;
+      newCustomerCode = `CUS#${newCode.toString().padStart(3, "0")}`;
+    }
+
     // Save the category name
     const newCustomer = new Customer({
+      customerCode: newCustomerCode,
       name,
       email,
       phone: sanitizedPhone,
