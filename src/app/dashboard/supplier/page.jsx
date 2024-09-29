@@ -110,7 +110,7 @@ const ManageSupplierPage = () => {
               <FaListOl size={20} className="mr-2" /> Supplier List:
             </div>
             <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
-              <Search />
+              <Search placeholder="Search Supplier ..." />
               <Button size="sm" variant="custom">
                 <FaFileExport size={16} className="mr-2" /> Export Supplier
               </Button>

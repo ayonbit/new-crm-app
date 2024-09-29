@@ -38,7 +38,8 @@ const CustomerCategoryPage = () => {
   const [categoryData, setcategoryData] = useState([]);
   //For loading state
   const [loading, setLoading] = useState(true);
-
+  // For Paginated Data
+  const [paginatedData, setPaginatedData] = useState([]);
   //customer data fetch
   useEffect(() => {
     const fetchcatdata = async () => {
@@ -173,7 +174,7 @@ const CustomerCategoryPage = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Pagination />
+          <Pagination items={categoryData} onPageChange={setPaginatedData} />
         </CardFooter>
       </Card>
     </div>

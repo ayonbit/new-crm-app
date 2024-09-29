@@ -44,13 +44,18 @@ import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
 const CustomerList = () => {
   // For Customer Fetch
   const [customerData, setCustomerData] = useState([]);
+  // For Loading
   const [loading, setLoading] = useState(true);
+  // For Search Functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  // For Paginated Data
+  const [paginatedData, setPaginatedData] = useState([]);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
       try {
         setLoading(true);
-        const customer = await fetchCustomer();
+        const customer = await fetchCustomer(searchQuery);
         setCustomerData(customer);
       } catch (error) {
         console.error("Error fetching customer data:", error.message);
@@ -59,7 +64,7 @@ const CustomerList = () => {
       }
     };
     fetchCustomerData();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="p-2 h-screen">
@@ -70,7 +75,10 @@ const CustomerList = () => {
               <FaListOl size={20} className="mr-2" /> Customer List:
             </div>
             <div className="flex-grow flex justify-end items-center space-x-4">
-              <Search />
+              <Search
+                placeholder="Search Customers ..."
+                onSearch={setSearchQuery}
+              />
               <Button
                 size="sm"
                 variant="custom"
@@ -142,7 +150,7 @@ const CustomerList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-white divide-y divide-gray-200">
-                {customerData.map((cus, index) => (
+                {paginatedData.map((cus, index) => (
                   <TableRow key={index} className="hover:bg-gray-100">
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.customerCode}
@@ -200,7 +208,7 @@ const CustomerList = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Pagination />
+          <Pagination items={customerData} onPageChange={setPaginatedData} />
         </CardFooter>
       </Card>
     </div>

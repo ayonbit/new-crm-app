@@ -24,6 +24,7 @@ import { FaCheck, FaPlus, FaTrash } from "react-icons/fa";
 
 //internal imports
 import Createcustomer from "@/components/customer/create/createcustomer";
+import Search from "@/components/search/search";
 //For creating new Quotations fuctionality
 const QuotationsAddPage = () => {
   const router = useRouter();
@@ -63,11 +64,7 @@ const QuotationsAddPage = () => {
           <div className="space-y-2">
             <h4 className="text-lg font-semibold">Select Customer</h4>
             <div className="flex items-center space-x-2">
-              <Input
-                type="text"
-                placeholder="Search Customer"
-                className="w-1/2 "
-              />
+              <Search placeholder="Search Customer ..." />
               <div className="flex-grow"></div>
               <Dialog>
                 <DialogTrigger asChild>

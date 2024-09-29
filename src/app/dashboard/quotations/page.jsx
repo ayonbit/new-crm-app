@@ -156,6 +156,9 @@ const quotationdata = [
 import { useRouter } from "next/navigation";
 //QUOTATION PAGE
 const Quotations = () => {
+
+
+  
   const router = useRouter();
 
   //For Quotation List Page Redirection
@@ -172,7 +175,7 @@ const Quotations = () => {
               <FaListOl size={20} className="mr-2" /> Quotation List:
             </div>
             <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
-              <Search />
+              <Search placeholder="Search Quotation ..." />
               <Button size="sm" variant="custom">
                 <FaFileExport size={16} className="mr-2" /> Export List
               </Button>

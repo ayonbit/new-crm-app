@@ -1,16 +1,38 @@
 "use client";
-//Dependencies
-
+// Dependencies
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
+import { useDebouncedCallback } from "use-debounce";
 
-//Search UI main function
-const Search = () => {
+// Search UI main function
+const Search = ({ placeholder, onSearch }) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = useDebouncedCallback((e) => {
+    const query = e.target.value;
+    const params = new URLSearchParams(searchParams);
+
+    if (query) {
+      if (query.length > 2) {
+        params.set("q", query);
+      }
+    } else {
+      params.delete("q");
+    }
+
+    replace(`${pathname}?${params}`);
+    onSearch(query); // Call the onSearch prop with the search query
+  }, 300);
+
   return (
-    <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 w-max">
-      <FaSearch size={20} />
+    <div className="flex items-center gap-2 p-2 rounded-lg bg-white border border-gray-300 shadow-sm w-max hover:shadow-md transition-shadow duration-200">
+      <FaSearch size={16} className="text-gray-500" />
       <input
-        placeholder="search"
-        className="outline-none bg-transparent text-sm"
+        placeholder={placeholder}
+        className="outline-none bg-transparent text-sm p-1 w-48"
+        onChange={handleSearch}
       />
     </div>
   );
