@@ -20,7 +20,10 @@ export const fetchCustomer = async (q) => {
         }
       : {};
 
-    const customer = await Customer.find(filter).lean();
+    // Fetch customers and limit the results
+    const customer = await Customer.find(filter).limit(10).lean();
+
+    // Serialize customer data for client-side use
     const serializedCustomer = customer.map((cus) => ({
       ...cus,
       _id: cus._id.toString(),
@@ -31,6 +34,8 @@ export const fetchCustomer = async (q) => {
     return serializedCustomer;
   } catch (error) {
     console.error("Error fetching customer:", error.message);
-    throw new Error("Failed to fetch customer");
+    throw new Error(
+      "Unable to retrieve customer data. Please try again later."
+    );
   }
 };

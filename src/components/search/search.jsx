@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import { useDebouncedCallback } from "use-debounce";
 
-// Search UI main function
 const Search = ({ placeholder, onSearch }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
