@@ -21,7 +21,6 @@ const customerSchema = yup.object().shape({
     .min(3, "Name must be at least 3 characters")
     .max(20, "Name must be at most 20 characters")
     .required("Name is required"),
-  //email: yup.string().email("Invalid email"),
   phone: yup.string().required("Phone is required"),
   address: yup.string(),
   category: yup.string().required("Customer category is required"),
@@ -44,8 +43,8 @@ const Createcustomer = () => {
 
   useEffect(() => {
     const fetchCatData = async () => {
-      const category = await fetchCustomerCategory();
-      setCategoryData(category);
+      const { categories } = await fetchCustomerCategory();
+      setCategoryData(categories);
     };
     fetchCatData();
   }, []);
@@ -203,7 +202,7 @@ const Createcustomer = () => {
 
       <div className="flex items-center space-x-2">
         <Label htmlFor="openingBalance" className="w-1/4 text-lg font-bold">
-          Opening Balance <span className="text-red-500">*</span>
+          Opening Balance
         </Label>
         <Controller
           name="openingBalance"
@@ -225,7 +224,7 @@ const Createcustomer = () => {
 
       <div className="flex items-center space-x-2">
         <Label htmlFor="dueLimit" className="w-1/4 text-lg font-bold">
-          Due Limit <span className="text-red-500">*</span>
+          Due Limit
         </Label>
         <Controller
           name="dueLimit"
@@ -247,7 +246,7 @@ const Createcustomer = () => {
 
       <div className="flex items-center space-x-2">
         <Label htmlFor="Status" className="w-1/4 text-lg font-bold">
-          Status <span className="text-red-500">*</span>
+          Status
         </Label>
         <Controller
           name="Status"
@@ -285,7 +284,7 @@ const Createcustomer = () => {
 
       <div className="flex items-center space-x-2">
         <Label htmlFor="setDefault" className="w-1/4 text-lg font-bold">
-          Set Default <span className="text-red-500">*</span>
+          Set Default
         </Label>
         <Controller
           name="setDefault"

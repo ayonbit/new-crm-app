@@ -3,37 +3,39 @@
 import Customer from "../Model/addcusmod";
 import { connectToDB } from "../dbcon";
 
-// Fetch customer
-export const fetchCustomer = async (q) => {
+export const fetchCustomer = async (q, page = 1, limit = 10) => {
   try {
     await connectToDB();
 
-    // Create a filter object based on the search query
     const filter = q
       ? {
           $or: [
             { name: { $regex: q, $options: "i" } },
             { email: { $regex: q, $options: "i" } },
             { phone: { $regex: q, $options: "i" } },
-            { customerCode: { $regex: q, $options: "i" } }, // Include customerCode in the search criteria
+            { customerCode: { $regex: q, $options: "i" } },
           ],
         }
       : {};
 
-    // Fetch customers and limit the results
-    const customer = await Customer.find(filter).limit(10).lean();
+    const totalCustomers = await Customer.countDocuments(filter);
+    const totalPages = Math.ceil(totalCustomers / limit);
 
-    // Serialize customer data for client-side use
-    const serializedCustomer = customer.map((cus) => ({
+    const customers = await Customer.find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean();
+
+    const serializedCustomers = customers.map((cus) => ({
       ...cus,
       _id: cus._id.toString(),
       createdAt: cus.createdAt ? cus.createdAt.toISOString() : null,
       updatedAt: cus.updatedAt ? cus.updatedAt.toISOString() : null,
     }));
 
-    return serializedCustomer;
+    return { customers: serializedCustomers, totalPages };
   } catch (error) {
-    console.error("Error fetching customer:", error.message);
+    console.error("Error fetching customers:", error.message);
     throw new Error(
       "Unable to retrieve customer data. Please try again later."
     );

@@ -95,7 +95,7 @@ const QuotationsAddPage = () => {
     const fetchCustomerData = async () => {
       if (searchQuery) {
         try {
-          const customers = await fetchCustomer(searchQuery);
+          const { customers } = await fetchCustomer(searchQuery);
           setFilteredCustomers(customers);
           setDropdownVisible(true);
         } catch (error) {
@@ -162,13 +162,27 @@ const QuotationsAddPage = () => {
       payable,
     };
 
-    // Log formData to check values
-    console.log("Form Data:", formData);
-
     try {
       const response = await CreateQuotationHandler(formData);
       if (response.success) {
         toast.success("Quotation saved successfully");
+
+        // Reset form state
+        setQuotes([
+          {
+            id: 1,
+            productName: "",
+            productPrice: 0,
+            productQuantity: 0,
+            productSubtotal: 0,
+          },
+        ]);
+        setSearchQuery("");
+        setSelectedCustomer(null);
+        setDiscount(0);
+        setTax(0);
+        setPayable(0);
+
         // Optionally, redirect or show a success message
       } else {
         toast.error(`Failed to save quotation: ${response.message}`);
@@ -204,7 +218,7 @@ const QuotationsAddPage = () => {
                   <div className="absolute z-10 w-64 bg-white border border-gray-600 mt-1 max-h-60 overflow-y-auto">
                     {filteredCustomers.map((customer) => (
                       <div
-                        key={customer.id}
+                        key={customer._id}
                         className="p-2 hover:bg-gray-100 cursor-pointer"
                         onMouseDown={() => handleCustomerSelect(customer)}
                       >

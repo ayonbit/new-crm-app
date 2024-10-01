@@ -1,7 +1,6 @@
 "use client";
 //Dependencies
 import Pagination from "@/components/pagination/pagination";
-
 import Search from "@/components/search/search";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   FaEdit,
   FaEye,
@@ -28,138 +29,47 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-//table data
-const quotationdata = [
-  {
-    Date: "01-01-2023",
-    Reference: "#quot-001",
-    Customer: "John Doe",
-    TotalPayable: "250.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "11-02-2023",
-    Reference: "#quot-002",
-    Customer: "Alex Doe",
-    TotalPayable: "1180.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "23-11-2023",
-    Reference: "#quot-003",
-    Customer: "Bob Doe",
-    TotalPayable: "2500.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "01-08-2023",
-    Reference: "#quot-004",
-    Customer: "Alice Bob",
-    TotalPayable: "25230.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "29-11-2023",
-    Reference: "#quot-005",
-    Customer: "John Alice",
-    TotalPayable: "2500296444.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "09-12-2023",
-    Reference: "#quot-006",
-    Customer: "Alice John",
-    TotalPayable: "2596440.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "13-01-2024",
-    Reference: "#quot-007",
-    Customer: "Ayon Bit",
-    TotalPayable: "8452560.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "15-05-2024",
-    Reference: "#quot-008",
-    Customer: "Bob John",
-    TotalPayable: "1452.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "15-05-2024",
-    Reference: "#quot-008",
-    Customer: "Bob John",
-    TotalPayable: "1452.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "15-05-2024",
-    Reference: "#quot-008",
-    Customer: "Bob John",
-    TotalPayable: "1452.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-  {
-    Date: "15-05-2024",
-    Reference: "#quot-008",
-    Customer: "Bob John",
-    TotalPayable: "1452.00",
-    Action: [
-      { view: <FaEye /> },
-      { edit: <FaEdit /> },
-      { delete: <FaTrash /> },
-    ],
-  },
-];
 
-import { useRouter } from "next/navigation";
-//QUOTATION PAGE
-const Quotations = () => {
+//Internal Dependencies
+import { fetchQuotation } from "@/lib/FetchHandler/createquotationfetch";
 
-
-  
+//Quotation List Page
+const QuotationsList = () => {
   const router = useRouter();
+  //For Quotation Fetch
+  const [quotationData, setQuotationData] = useState([]);
+  //For Loading
+  const [loading, setLoading] = useState(true);
+  //For Search Functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  //For Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    const fetchQuotationData = async () => {
+      try {
+        setLoading(true);
+        const { quotations, totalPages } = await fetchQuotation(
+          searchQuery,
+          currentPage
+        );
+        setQuotationData(quotations);
+        setTotalPages(totalPages);
+      } catch (error) {
+        console.error("Error fetching quotation data:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchQuotationData();
+  }, [searchQuery, currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   //For Quotation List Page Redirection
   const handlequotionRedirect = () => {
@@ -175,7 +85,10 @@ const Quotations = () => {
               <FaListOl size={20} className="mr-2" /> Quotation List:
             </div>
             <div className="flex-grow flex justify-end items-center space-x-4 mr-8">
-              <Search placeholder="Search Quotation ..." />
+              <Search
+                placeholder="Search Quotation ..."
+                onSearch={setSearchQuery}
+              />
               <Button size="sm" variant="custom">
                 <FaFileExport size={16} className="mr-2" /> Export List
               </Button>
@@ -191,46 +104,80 @@ const Quotations = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Reference</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Total Payable</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {quotationdata.map((quote, index) => (
-                <TableRow key={index}>
-                  <TableCell>{quote.Date}</TableCell>
-                  <TableCell>{quote.Reference}</TableCell>
-                  <TableCell>{quote.Customer}</TableCell>
-                  <TableCell>{quote.TotalPayable}</TableCell>
-                  <TableCell>
-                    <Button variant="view" size="icon">
-                      {quote.Action.find((action) => action.view)?.view}
-                    </Button>
-                    <Button variant="edit" size="icon">
-                      {quote.Action.find((action) => action.edit)?.edit}
-                    </Button>
-                    <Button variant="delete" size="icon">
-                      {quote.Action.find((action) => action.delete)?.delete}
-                    </Button>
-                  </TableCell>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="loader">Loading...</div>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Serial
+                  </TableHead>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Date
+                  </TableHead>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Quotation Id
+                  </TableHead>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Customer Name
+                  </TableHead>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Total Payable
+                  </TableHead>
+                  <TableHead className="py-2 px-4 text-left text-black font-bold">
+                    Action
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableCaption>A list of your recent Quotations.</TableCaption>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {quotationData.map((quote, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="py-2 px-4 text-left">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-left">
+                      {new Date(quote.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-left">
+                      {quote.quotationId}
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-left">
+                      {quote.customerName}
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-left">
+                      {quote.payable}
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-left">
+                      <Button variant="view" size="icon" className="mr-1">
+                        <FaEye size={16} />
+                      </Button>
+                      <Button variant="edit" size="icon" className="mr-1">
+                        <FaEdit size={16} />
+                      </Button>
+                      <Button variant="delete" size="icon">
+                        <FaTrash size={16} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableCaption>A list of your recent Quotations.</TableCaption>
+            </Table>
+          )}
         </CardContent>
         <CardFooter>
-          <Pagination />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardFooter>
       </Card>
     </div>
   );
 };
 
-export default Quotations;
+export default QuotationsList;

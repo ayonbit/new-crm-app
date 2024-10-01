@@ -38,18 +38,28 @@ const CustomerCategoryPage = () => {
   const [categoryData, setcategoryData] = useState([]);
   //For loading state
   const [loading, setLoading] = useState(true);
-  // For Paginated Data
-  const [paginatedData, setPaginatedData] = useState([]);
-  //customer data fetch
+  // For Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   useEffect(() => {
     const fetchcatdata = async () => {
       setLoading(true);
-      const category = await fetchCustomerCategory();
-      setcategoryData(category);
+      const { categories, totalPages } = await fetchCustomerCategory(
+        currentPage
+      );
+      setcategoryData(categories);
+      setTotalPages(totalPages);
       setLoading(false);
     };
     fetchcatdata();
-  }, []);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <div className="p-2 h-screen">
@@ -174,7 +184,11 @@ const CustomerCategoryPage = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Pagination items={categoryData} onPageChange={setPaginatedData} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardFooter>
       </Card>
     </div>

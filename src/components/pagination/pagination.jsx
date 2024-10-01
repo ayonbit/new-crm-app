@@ -1,56 +1,41 @@
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+"use client";
+// Dependencies
+import { Button } from "../ui/button";
 
-const Pagination = ({ items = [], onPageChange = () => {} }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
-  const totalPages = Math.ceil(items.length / itemsPerPage);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentItems = items.slice(startIndex, endIndex);
-    onPageChange(currentItems);
-  }, [currentPage, items, onPageChange]);
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      onPageChange(newPage);
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
-      <div className="flex items-center w-full mt-4">
-        <span className="text-gray-600">
-          Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-          {Math.min(currentPage * itemsPerPage, items.length)} of {items.length}{" "}
-          entries
+    <div className="flex justify-between items-center w-full py-2">
+      {/* Left side: Page info */}
+      <div className="text-left">
+        <span>
+          Page {currentPage} of {totalPages > 0 ? totalPages : 1} Pages
         </span>
-        <div className="ml-auto flex space-x-2">
-          <Button
-            variant="custom"
-            size="sm"
-            onClick={handlePrevious}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="custom"
-            size="sm"
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </div>
+      </div>
+
+      {/* Right side: Navigation buttons */}
+      <div className="flex space-x-2 text-right">
+        <Button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1 || totalPages <= 1}
+          aria-label="Previous Page"
+          size="custom"
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages || totalPages <= 1}
+          aria-label="Next Page"
+          size="custom"
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

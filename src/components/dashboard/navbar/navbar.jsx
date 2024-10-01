@@ -27,7 +27,7 @@ const Navbar = () => {
           <MdMenu size={30} />
         </span>
         <div className="text-white font-semibold text-2xl uppercase">
-          <h1>Patkelghata Builders</h1>
+          <h1>Shop Name</h1>
         </div>
         <div className="flex gap-5 text-white justify-center items-center">
           <div className="flex gap-2">

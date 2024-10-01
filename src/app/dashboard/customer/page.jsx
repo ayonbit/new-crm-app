@@ -48,15 +48,20 @@ const CustomerList = () => {
   const [loading, setLoading] = useState(true);
   // For Search Functionality
   const [searchQuery, setSearchQuery] = useState("");
-  // For Paginated Data
-  const [paginatedData, setPaginatedData] = useState([]);
+  // For Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
       try {
         setLoading(true);
-        const customer = await fetchCustomer(searchQuery);
-        setCustomerData(customer);
+        const { customers, totalPages } = await fetchCustomer(
+          searchQuery,
+          currentPage
+        );
+        setCustomerData(customers);
+        setTotalPages(totalPages);
       } catch (error) {
         console.error("Error fetching customer data:", error.message);
       } finally {
@@ -64,7 +69,13 @@ const CustomerList = () => {
       }
     };
     fetchCustomerData();
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <div className="p-2 h-screen">
@@ -149,31 +160,31 @@ const CustomerList = () => {
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="bg-white divide-y divide-gray-200">
-                {paginatedData.map((cus, index) => (
+              <TableBody className="bg-white divide-y  divide-gray-200">
+                {customerData.map((cus, index) => (
                   <TableRow key={index} className="hover:bg-gray-100">
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm font-medium text-gray-900  border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.customerCode}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2 text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.name}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.email}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.phone}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-pre-line text-sm text-gray-800 text-center border border-gray-300">
+                    <TableCell className=" text-gray-800 text-left border border-gray-300">
                       {cus.address}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.category}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm text-gray-800  border border-gray-300 overflow-hidden overflow-ellipsis">
                       {cus.openingBalance}
                     </TableCell>
-                    <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
+                    <TableCell className="px-2 py-2  text-sm text-gray-800 border border-gray-300 overflow-hidden overflow-ellipsis">
                       {new Date(cus.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm  border border-gray-300 overflow-hidden overflow-ellipsis">
@@ -187,15 +198,15 @@ const CustomerList = () => {
                         {cus.Status}
                       </span>
                     </TableCell>
-                    <TableCell className=" flex items-center  text-sm font-medium  border-gray-300">
-                      <Button variant="view" size="icon" className="mr-1">
-                        <FaEye size={12} />
+                    <TableCell className=" flex flex-col text-sm font-medium border-gray-300">
+                      <Button variant="view" size="icon">
+                        <FaEye size={16} />
                       </Button>
-                      <Button variant="edit" size="icon" className="mr-1">
-                        <FaEdit size={12} />
+                      <Button variant="edit" size="icon">
+                        <FaEdit size={16} />
                       </Button>
                       <Button variant="delete" size="icon">
-                        <FaTrash size={12} />
+                        <FaTrash size={16} />
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -208,7 +219,11 @@ const CustomerList = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Pagination items={customerData} onPageChange={setPaginatedData} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardFooter>
       </Card>
     </div>
