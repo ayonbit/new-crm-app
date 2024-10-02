@@ -32,3 +32,27 @@ export const fetchCustomerCategory = async (page = 1, limit = 10) => {
     throw new Error("Failed to fetch customer category");
   }
 };
+// Fetch single customer category
+export const fetchSingleCustomerCategory = async (id) => {
+  try {
+    await connectToDB();
+
+    const category = await CustomerCategory.findById(id).lean();
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    //console.log("Fetched category:", category); // Log fetched category
+
+    return {
+      ...category,
+      _id: category._id.toString(), // Convert ObjectId to string
+      createdAt: category.createdAt ? category.createdAt.toISOString() : null, // Convert Date to ISO string
+      updatedAt: category.updatedAt ? category.updatedAt.toISOString() : null,
+    };
+  } catch (error) {
+    console.error("Error fetching single customer category:", error.message);
+    throw new Error("Failed to fetch single customer category");
+  }
+};

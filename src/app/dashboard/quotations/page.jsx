@@ -19,7 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import {
   FaEdit,
@@ -29,13 +30,11 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-
 //Internal Dependencies
 import { fetchQuotation } from "@/lib/FetchHandler/createquotationfetch";
 
 //Quotation List Page
 const QuotationsList = () => {
-  const router = useRouter();
   //For Quotation Fetch
   const [quotationData, setQuotationData] = useState([]);
   //For Loading
@@ -71,11 +70,6 @@ const QuotationsList = () => {
     }
   };
 
-  //For Quotation List Page Redirection
-  const handlequotionRedirect = () => {
-    router.push("/dashboard/quotations/add");
-  };
-
   return (
     <div className="p-2 h-screen">
       <Card>
@@ -92,14 +86,12 @@ const QuotationsList = () => {
               <Button size="sm" variant="custom">
                 <FaFileExport size={16} className="mr-2" /> Export List
               </Button>
-              <Button
-                size="sm"
-                variant="custom"
-                onClick={handlequotionRedirect}
-              >
-                <FaPlus size={10} className="mr-2" />
-                Add Quotation
-              </Button>
+              <Link href="/dashboard/quotations/add">
+                <Button size="sm" variant="custom">
+                  <FaPlus size={10} className="mr-2" />
+                  Add Quotation
+                </Button>
+              </Link>
             </div>
           </CardTitle>
         </CardHeader>

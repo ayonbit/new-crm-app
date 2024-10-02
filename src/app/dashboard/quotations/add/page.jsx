@@ -19,11 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
+
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaCheck, FaPlus, FaTrash } from "react-icons/fa";
-
 // Internal Imports
 import Createcustomer from "@/components/customer/create/createcustomer";
 import { CreateQuotationHandler } from "@/lib/ActionHandler/quotationcreate";
@@ -31,13 +31,6 @@ import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
 
 // Quotation Add Page
 const QuotationsAddPage = () => {
-  const router = useRouter();
-
-  // Redirect to Quotation List
-  const handleListRedirect = () => {
-    router.push("/dashboard/quotations");
-  };
-
   // Quotation Items Management
   const [quotes, setQuotes] = useState([
     {
@@ -388,13 +381,11 @@ const QuotationsAddPage = () => {
               <FaCheck size={10} />
               <span>Add Quotation</span>
             </Button>
-            <Button
-              size="sm"
-              className="bg-red-600 hover:bg-red-400"
-              onClick={handleListRedirect}
-            >
-              Quotation List
-            </Button>
+            <Link href="/dashboard/quotations">
+              <Button size="sm" className=" bg-red-600 hover:bg-red-400 w-full">
+                Quotation List
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

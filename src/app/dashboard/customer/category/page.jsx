@@ -1,6 +1,5 @@
 "use client";
 // Dependencies
-
 import Pagination from "@/components/pagination/pagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
 //Internal import
@@ -164,9 +164,14 @@ const CustomerCategoryPage = () => {
                       {new Date(cat.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium border border-gray-300">
-                      <Button variant="view" size="icon" className="mr-2">
-                        <FaEye />
-                      </Button>
+                      <Link
+                        href={`/dashboard/customer/category/${cat._id}`}
+                        passHref
+                      >
+                        <Button variant="view" size="icon" className="mr-2">
+                          <FaEye />
+                        </Button>
+                      </Link>
                       <Button variant="edit" size="icon" className="mr-2">
                         <FaEdit />
                       </Button>
