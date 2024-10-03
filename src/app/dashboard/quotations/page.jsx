@@ -86,7 +86,7 @@ const QuotationsList = () => {
               <Button size="sm" variant="custom">
                 <FaFileExport size={16} className="mr-2" /> Export List
               </Button>
-              <Link href="/dashboard/quotations/add">
+              <Link href={"/dashboard/quotations/add"}>
                 <Button size="sm" variant="custom">
                   <FaPlus size={10} className="mr-2" />
                   Add Quotation

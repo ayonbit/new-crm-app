@@ -12,7 +12,7 @@ const CustomerAddPage = () => {
       <Card className="p-6 pr-12">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold">Add New Customer</h1>
-          <Link href="/dashboard/customer">
+          <Link href={"/dashboard/customer"}>
             <Button variant="custom" className="flex items-center space-x-2">
               <FaEye size={16} />
               <span>View Customer</span>

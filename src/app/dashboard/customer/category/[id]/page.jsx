@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { FaListOl } from "react-icons/fa";
 // Internal Dependencies
 import { fetchSingleCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
+
 import Link from "next/link";
 
-// Single category page
+// Single category page view
 const SingleCategoryPage = () => {
   const { id } = useParams();
   const [categoryData, setCategoryData] = useState(null);
@@ -45,7 +46,7 @@ const SingleCategoryPage = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Category Table</CardTitle>
-            <Link href="/dashboard/customer/category">
+            <Link href={"/dashboard/customer/category"}>
               <Button size="custom" variant="custom">
                 Back to list
               </Button>
@@ -53,7 +54,7 @@ const SingleCategoryPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table className="border border-gray-300">
+          <Table className=" w-full  divide-y border border-gray-300">
             <TableBody>
               <TableRow className="border-b border-gray-300">
                 <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
@@ -81,7 +82,15 @@ const SingleCategoryPage = () => {
               </TableRow>
               <TableRow className="border-b border-gray-300">
                 <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
-                  Amount Type
+                  Amount (%)
+                </TableCell>
+                <TableCell className="font-normal px-4 py-4">
+                  {categoryData.Amount}
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-gray-300">
+                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+                  Type
                 </TableCell>
                 <TableCell className="font-normal px-4 py-4">
                   {categoryData.Type}

@@ -1,11 +1,11 @@
-import { JetBrains_Mono } from "next/font/google";
+import { Inter_Tight } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 //fonts config
-const jetbrainsMono = JetBrains_Mono({
+const InterMono = Inter_Tight({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-  variable: "--font-jetbrainsMono",
+  variable: "--font-inter",
 });
 
 export const metadata = {
@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={jetbrainsMono.variable}>
+      <body className={InterMono.variable}>
         {children}
         <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       </body>

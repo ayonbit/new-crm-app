@@ -381,7 +381,7 @@ const QuotationsAddPage = () => {
               <FaCheck size={10} />
               <span>Add Quotation</span>
             </Button>
-            <Link href="/dashboard/quotations">
+            <Link href={"/dashboard/quotations"}>
               <Button size="sm" className=" bg-red-600 hover:bg-red-400 w-full">
                 Quotation List
               </Button>

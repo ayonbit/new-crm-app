@@ -27,20 +27,26 @@ import {
 import Link from "next/link";
 import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
-//Internal import
+// Internal import
+import ConfirmationDialog from "@/components/confrimdialog/ConformDialog";
 import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
+import { deleteCategoryHandler } from "@/lib/ActionHandler/cuscatcreate";
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 // Category page
 const CustomerCategoryPage = () => {
-  //For category fetch
+  // For category fetch
   const [categoryData, setcategoryData] = useState([]);
-  //For loading state
+  // For loading state
   const [loading, setLoading] = useState(true);
   // For Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  // For delete confirmation dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null);
 
   useEffect(() => {
     const fetchcatdata = async () => {
@@ -59,6 +65,24 @@ const CustomerCategoryPage = () => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteCategoryHandler(categoryIdToDelete);
+    if (result.success) {
+      toast.success(result.message);
+      setcategoryData(
+        categoryData.filter((cat) => cat._id !== categoryIdToDelete)
+      );
+    } else {
+      toast.error(result.message);
+    }
+    setIsDialogOpen(false);
+  };
+
+  const openConfirmationDialog = (id) => {
+    setCategoryIdToDelete(id);
+    setIsDialogOpen(true);
   };
 
   return (
@@ -109,10 +133,10 @@ const CustomerCategoryPage = () => {
                     Description
                   </TableHead>
                   <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                    Amount Of
+                    Amount
                   </TableHead>
                   <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
-                    Amount
+                    Amount (%)
                   </TableHead>
                   <TableHead className="px-2 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-300">
                     Type
@@ -141,10 +165,10 @@ const CustomerCategoryPage = () => {
                       {cat.Description}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 text-center border border-gray-300">
-                      {cat.AmountOf}
+                      {cat.Amount}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 text-center border border-gray-300">
-                      {cat.Amount}
+                      {cat.AmountOf}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
                       {cat.Type}
@@ -161,7 +185,7 @@ const CustomerCategoryPage = () => {
                       </span>
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm text-gray-800 border border-gray-300">
-                      {new Date(cat.createdAt).toLocaleDateString()}
+                      {new Date(cat.updatedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium border border-gray-300">
                       <Link
@@ -172,10 +196,19 @@ const CustomerCategoryPage = () => {
                           <FaEye />
                         </Button>
                       </Link>
-                      <Button variant="edit" size="icon" className="mr-2">
-                        <FaEdit />
-                      </Button>
-                      <Button variant="delete" size="icon">
+                      <Link
+                        href={`/dashboard/customer/category/${cat._id}/edit`}
+                      >
+                        <Button variant="edit" size="icon" className="mr-2">
+                          <FaEdit />
+                        </Button>
+                      </Link>
+
+                      <Button
+                        variant="delete"
+                        size="icon"
+                        onClick={() => openConfirmationDialog(cat._id)}
+                      >
                         <FaTrash />
                       </Button>
                     </TableCell>
@@ -196,6 +229,13 @@ const CustomerCategoryPage = () => {
           />
         </CardFooter>
       </Card>
+
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleDelete}
+        message="Are you sure to delete this category?"
+      />
     </div>
   );
 };
