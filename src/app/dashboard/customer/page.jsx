@@ -38,6 +38,7 @@ import {
 // Internal Dependencies
 import Createcustomer from "@/components/customer/create/createcustomer";
 import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
+import Link from "next/link";
 
 // Customer List Page
 const CustomerList = () => {
@@ -198,10 +199,11 @@ const CustomerList = () => {
                       </span>
                     </TableCell>
                     <TableCell className=" flex flex-col text-sm font-medium border-gray-300">
-                      <Button variant="view" size="icon">
-                        <FaEye size={16} />
-                      </Button>
-
+                      <Link href={`/dashboard/customer/${cus._id}`}>
+                        <Button variant="view" size="icon">
+                          <FaEye size={16} />
+                        </Button>
+                      </Link>
                       <Button variant="edit" size="icon">
                         <FaEdit size={16} />
                       </Button>

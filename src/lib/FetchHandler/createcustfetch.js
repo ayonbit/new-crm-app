@@ -42,3 +42,25 @@ export const fetchCustomer = async (q, page = 1, limit = 10) => {
     );
   }
 };
+
+//Fetch single customer data
+export const fetchSingleCustomer = async (id) => {
+  try {
+    await connectToDB();
+
+    const customer = await Customer.findById(id).lean();
+    if (!customer) {
+      throw new Error("Customer not found");
+    }
+    //console.log("Fetched customer:", customer); // Log fetched customer
+    return {
+      ...customer,
+      _id: customer._id.toString(), // Convert ObjectId to string
+      createdAt: customer.createdAt ? customer.createdAt.toISOString() : null, // Convert Date to ISO string
+      updatedAt: customer.updatedAt ? customer.updatedAt.toISOString() : null,
+    };
+  } catch (error) {
+    console.error("Error fetching customer:", error.message);
+    throw new Error("Failed to fetch  customer data");
+  }
+};

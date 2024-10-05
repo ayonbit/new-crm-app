@@ -54,53 +54,51 @@ const SingleCategoryPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table className=" w-full  divide-y border border-gray-300">
+          <Table className="w- divide-y border border-gray-300 rounded-lg shadow-lg">
             <TableBody>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Category Name
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
+                <TableCell className=" px-2 py-2">
                   {categoryData.CategoryName}
                 </TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Description
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
+                <TableCell className="px-2 py-2">
                   {categoryData.Description}
                 </TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Amount
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
+                <TableCell className="px-2 py-2">
                   {categoryData.AmountOf}
                 </TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Amount (%)
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
+                <TableCell className="px-2 py-2">
                   {categoryData.Amount}
                 </TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Type
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
-                  {categoryData.Type}
-                </TableCell>
+                <TableCell className="px-2 py-2">{categoryData.Type}</TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300">
-                <TableCell className="font-bold text-xl border-r border-gray-300 px-4 py-4">
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Status
                 </TableCell>
-                <TableCell className="font-normal px-4 py-4">
+                <TableCell className="px-2 py-2">
                   {categoryData.Status}
                 </TableCell>
               </TableRow>
