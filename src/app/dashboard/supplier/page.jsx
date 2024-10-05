@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Suspense } from "react";
 import {
   FaEdit,
   FaEye,
@@ -34,7 +35,6 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-//Internal Dependencies
 
 //Customer List Data
 const supplierListData = [
@@ -99,6 +99,7 @@ const supplierListData = [
     ],
   },
 ];
+
 //Manage Supplier Page
 const ManageSupplierPage = () => {
   return (
@@ -203,4 +204,10 @@ const ManageSupplierPage = () => {
   );
 };
 
-export default ManageSupplierPage;
+const Page = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ManageSupplierPage />
+  </Suspense>
+);
+
+export default Page;

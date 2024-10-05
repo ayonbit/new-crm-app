@@ -1,5 +1,4 @@
 "use client";
-
 // Dependencies
 import Pagination from "@/components/pagination/pagination";
 import Search from "@/components/search/search";
@@ -26,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   FaEdit,
   FaEye,
@@ -202,6 +201,7 @@ const CustomerList = () => {
                       <Button variant="view" size="icon">
                         <FaEye size={16} />
                       </Button>
+
                       <Button variant="edit" size="icon">
                         <FaEdit size={16} />
                       </Button>
@@ -230,4 +230,10 @@ const CustomerList = () => {
   );
 };
 
-export default CustomerList;
+const Page = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <CustomerList />
+  </Suspense>
+);
+
+export default Page;

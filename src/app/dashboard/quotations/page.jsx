@@ -20,8 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   FaEdit,
   FaEye,
@@ -172,4 +171,10 @@ const QuotationsList = () => {
   );
 };
 
-export default QuotationsList;
+const Page = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <QuotationsList />
+  </Suspense>
+);
+
+export default Page;

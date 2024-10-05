@@ -3,6 +3,7 @@
 import Customer from "../Model/addcusmod";
 import { connectToDB } from "../dbcon";
 
+//Fetch customer data
 export const fetchCustomer = async (q, page = 1, limit = 10) => {
   try {
     await connectToDB();
