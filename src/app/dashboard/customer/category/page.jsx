@@ -189,7 +189,7 @@ const CustomerCategoryPage = () => {
                     </TableCell>
                     <TableCell className="px-2 py-2 whitespace-nowrap text-sm font-medium border border-gray-300">
                       <Link
-                        href={`/dashboard/customer/category/${cat._id}`}
+                        href={`/dashboard/customer/category/view/${cat._id}`}
                         passHref
                       >
                         <Button variant="view" size="icon" className="mr-2">
@@ -197,7 +197,7 @@ const CustomerCategoryPage = () => {
                         </Button>
                       </Link>
                       <Link
-                        href={`/dashboard/customer/category/${cat._id}/edit`}
+                        href={`/dashboard/customer/category/edit/${cat._id}`}
                       >
                         <Button variant="edit" size="icon" className="mr-2">
                           <FaEdit />

@@ -32,6 +32,7 @@ export const fetchCustomerCategory = async (page = 1, limit = 10) => {
     throw new Error("Failed to fetch customer category");
   }
 };
+
 // Fetch single customer category
 export const fetchSingleCustomerCategory = async (id) => {
   try {
@@ -42,12 +43,11 @@ export const fetchSingleCustomerCategory = async (id) => {
     if (!category) {
       throw new Error("Category not found");
     }
-
-    //console.log("Fetched category:", category); // Log fetched category
-
     return {
+      //...category._doc, // Spread the document properties
       ...category,
       _id: category._id.toString(), // Convert ObjectId to string
+      CategoryName: category.CategoryName.toString(),
       createdAt: category.createdAt ? category.createdAt.toISOString() : null, // Convert Date to ISO string
       updatedAt: category.updatedAt ? category.updatedAt.toISOString() : null,
     };

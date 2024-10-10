@@ -78,3 +78,6 @@ export const CreateCustomerHandler = async (formData) => {
     return { success: false, message: error.message };
   }
 };
+//Update customer
+
+//Delete customer

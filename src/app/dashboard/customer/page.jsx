@@ -204,9 +204,11 @@ const CustomerList = () => {
                           <FaEye size={16} />
                         </Button>
                       </Link>
-                      <Button variant="edit" size="icon">
-                        <FaEdit size={16} />
-                      </Button>
+                      <Link href={`/dashboard/customer/${cus._id}/edit`}>
+                        <Button variant="edit" size="icon">
+                          <FaEdit size={16} />
+                        </Button>
+                      </Link>
                       <Button variant="delete" size="icon">
                         <FaTrash size={16} />
                       </Button>

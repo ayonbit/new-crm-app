@@ -8,10 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import * as yup from "yup";
 // Internal imports
-import { CreateCustomerHandler } from "@/lib/ActionHandler/customercreate";
+
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 
 // Define validation schema using yup
@@ -37,7 +36,7 @@ const customerSchema = yup.object().shape({
 });
 
 // Create Customer Form
-const Createcustomer = () => {
+const Createcustomer = ({ onSubmit }) => {
   // For category fetch
   const [categoryData, setCategoryData] = useState([]);
 
@@ -68,24 +67,11 @@ const Createcustomer = () => {
       setDefault: "false",
     },
   });
-
-  const onSubmit = async (data) => {
-    try {
-      const result = await CreateCustomerHandler(data);
-      if (result.success) {
-        toast.success(result.message);
-        reset();
-      } else {
-        toast.error(result.message || "Failed to create customer");
-      }
-    } catch (error) {
-      console.error("Error creating customer:", error.message);
-      toast.error("Failed to create customer");
-    }
+  const submitHandler = (data) => {
+    onSubmit(data, reset);
   };
-
   return (
-    <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-3" onSubmit={handleSubmit(submitHandler)}>
       <div className="flex items-center space-x-2">
         <Label htmlFor="name" className="w-1/4 text-lg font-bold">
           Name <span className="text-red-500">*</span>

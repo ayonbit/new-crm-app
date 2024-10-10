@@ -13,12 +13,12 @@ import Link from "next/link";
 
 // Single category page view
 const SingleCategoryPage = () => {
-  const { id } = useParams();
+  const { id} = useParams();
   const [categoryData, setCategoryData] = useState(null);
 
   useEffect(() => {
     if (id) {
-      // Fetch the category data based on the ID
+      // Fetch the category data based on the CategoryName
       fetchSingleCustomerCategory(id)
         .then((data) => setCategoryData(data))
         .catch((error) =>
@@ -61,7 +61,7 @@ const SingleCategoryPage = () => {
                   Category Name
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {categoryData.CategoryName}
+                  {categoryData.CategoryName || "N/A"}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -69,7 +69,7 @@ const SingleCategoryPage = () => {
                   Description
                 </TableCell>
                 <TableCell className="px-2 py-2">
-                  {categoryData.Description}
+                  {categoryData.Description || "N/A"}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -77,7 +77,7 @@ const SingleCategoryPage = () => {
                   Amount
                 </TableCell>
                 <TableCell className="px-2 py-2">
-                  {categoryData.AmountOf}
+                  {categoryData.AmountOf || "N/A"}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -85,21 +85,23 @@ const SingleCategoryPage = () => {
                   Amount (%)
                 </TableCell>
                 <TableCell className="px-2 py-2">
-                  {categoryData.Amount}
+                  {categoryData.Amount || "N/A"}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Type
                 </TableCell>
-                <TableCell className="px-2 py-2">{categoryData.Type}</TableCell>
+                <TableCell className="px-2 py-2">
+                  {categoryData.Type || "N/A"}
+                </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Status
                 </TableCell>
                 <TableCell className="px-2 py-2">
-                  {categoryData.Status}
+                  {categoryData.Status || "N/A"}
                 </TableCell>
               </TableRow>
             </TableBody>
