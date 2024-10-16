@@ -1,4 +1,5 @@
 "use client";
+
 // Dependencies
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,15 +7,17 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import * as yup from "yup";
 // Internal imports
-import { CreateCustomerHandler } from "@/lib/ActionHandler/customercreate";
+import { updateCustomerHandler } from "@/lib/ActionHandler/customercreate";
+import { fetchSingleCustomer } from "@/lib/FetchHandler/createcustfetch";
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 
-// Define validation schema using yup
+// Validation schema using yup
 const customerSchema = yup.object().shape({
   name: yup
     .string()
@@ -36,19 +39,11 @@ const customerSchema = yup.object().shape({
   setDefault: yup.string().required("Set Default is required"),
 });
 
-// Create Customer Form
-const CreateCustomer = () => {
-  // For category fetch
-  const [categoryData, setCategoryData] = useState([]);
+const UpdateCustomer = () => {
+  const { id } = useParams();
+  const [categoryData, setCategoryData] = useState([]); // State for category data
 
-  useEffect(() => {
-    const fetchCatData = async () => {
-      const { categories } = await fetchCustomerCategory();
-      setCategoryData(categories);
-    };
-    fetchCatData();
-  }, []);
-
+  // Initialize the form
   const {
     control,
     handleSubmit,
@@ -61,30 +56,74 @@ const CreateCustomer = () => {
       email: "",
       phone: "",
       address: "",
-      category: "",
+      category: "", // To be filled with fetched category data
       openingBalance: 0,
       dueLimit: 0,
       Status: "Active",
       setDefault: "false",
     },
   });
+
+  // Fetch customer data by ID and update the form with the fetched values
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      if (id) {
+        try {
+          const customer = await fetchSingleCustomer(id);
+          if (customer) {
+            // Reset the form with fetched customer data
+            reset({
+              name: customer.name || "",
+              email: customer.email || "",
+              phone: customer.phone || "",
+              address: customer.address || "",
+              category: customer.category || "", // Pre-populate category field
+              openingBalance: customer.openingBalance || 0,
+              dueLimit: customer.dueLimit || 0,
+              Status: customer.Status || "Active",
+              setDefault: customer.setDefault || "false",
+            });
+          }
+        } catch (error) {
+          console.error("Failed to fetch customer:", error);
+        }
+      }
+    };
+
+    fetchCustomerData();
+  }, [id, reset]);
+
+  // Fetch category data
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const { categories } = await fetchCustomerCategory();
+        setCategoryData(categories);
+      } catch (error) {
+        console.error("Failed to fetch customer categories:", error);
+      }
+    };
+    fetchCategoryData();
+  }, []);
+
+  // Form submission handler for updating the customer
   const submitHandler = async (data) => {
     try {
-      const result = await CreateCustomerHandler(data);
+      const result = await updateCustomerHandler({ id, ...data }); // Send updated data
       if (result.success) {
         toast.success(result.message);
-        reset();
       } else {
-        toast.error(result.message || "Failed to create customer");
+        toast.error(result.message || "Failed to update customer");
       }
     } catch (error) {
-      console.error("Error creating customer:", error.message);
-      toast.error("Failed to create customer");
+      console.error("Error updating customer:", error.message);
+      toast.error("Failed to update customer");
     }
   };
 
   return (
     <form className="space-y-3" onSubmit={handleSubmit(submitHandler)}>
+      {/* Name Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="name" className="w-1/4 text-lg font-bold">
           Name <span className="text-red-500">*</span>
@@ -107,6 +146,7 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Email Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="email" className="w-1/4 text-lg font-bold">
           Email
@@ -129,6 +169,7 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Phone Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="phone" className="w-1/4 text-lg font-bold">
           Phone <span className="text-red-500">*</span>
@@ -151,6 +192,7 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Address Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="address" className="w-1/4 text-lg font-bold">
           Address
@@ -172,6 +214,7 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Category Dropdown */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="category" className="w-1/4 text-lg font-bold">
           Customer Category <span className="text-red-500">*</span>
@@ -184,8 +227,10 @@ const CreateCustomer = () => {
               {...field}
               id="category"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
+              value={field.value || ""} // Pre-populate the selected category
+              onChange={(e) => field.onChange(e.target.value)} // Handle change
             >
-              <option value="">Select category</option>
+              {/* <option value="">Select category</option> */}
               {categoryData.map((cat) => (
                 <option key={cat._id} value={cat.CategoryName}>
                   {cat.CategoryName}
@@ -199,9 +244,10 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Opening Balance Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="openingBalance" className="w-1/4 text-lg font-bold">
-          Opening Balance
+          Opening Balance <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="openingBalance"
@@ -221,9 +267,10 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Due Limit Field */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="dueLimit" className="w-1/4 text-lg font-bold">
-          Due Limit
+          Due Limit <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="dueLimit"
@@ -243,9 +290,10 @@ const CreateCustomer = () => {
         )}
       </div>
 
+      {/* Status Radio Group */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="Status" className="w-1/4 text-lg font-bold">
-          Status
+          Status <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="Status"
@@ -254,36 +302,28 @@ const CreateCustomer = () => {
             <RadioGroup
               value={field.value}
               onValueChange={field.onChange}
-              className="flex items-center space-x-2 w-2/4"
-              id="Status"
+              className="flex space-x-4"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem
-                  className="w-4 h-4 rounded-full border border-gray-300 checked:bg-blue-600 checked:border-transparent focus:outline-none"
-                  value="Active"
-                  id="active"
-                />
-                <Label htmlFor="active">Active</Label>
+                <RadioGroupItem value="Active" id="r1" />
+                <Label htmlFor="r1">Active</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem
-                  className="w-4 h-4 rounded-full border border-gray-300 checked:bg-blue-600 checked:border-transparent focus:outline-none"
-                  value="Inactive"
-                  id="inactive"
-                />
-                <Label htmlFor="inactive">Inactive</Label>
+                <RadioGroupItem value="Inactive" id="r2" />
+                <Label htmlFor="r2">Inactive</Label>
               </div>
             </RadioGroup>
           )}
         />
         {errors.Status && (
-          <p className="text-red-500 mt-1">{errors.Status.message}</p>
+          <p className="text-red-500 ml-4">{errors.Status.message}</p>
         )}
       </div>
 
+      {/* Set Default Radio Group */}
       <div className="flex items-center space-x-2">
         <Label htmlFor="setDefault" className="w-1/4 text-lg font-bold">
-          Set Default
+          Set Default <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="setDefault"
@@ -292,43 +332,28 @@ const CreateCustomer = () => {
             <RadioGroup
               value={field.value}
               onValueChange={field.onChange}
-              className="flex items-center space-x-2 w-2/4"
-              id="setDefault"
+              className="flex space-x-4"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem
-                  className="w-4 h-4 rounded-full border border-gray-300 checked:bg-blue-600 checked:border-transparent focus:outline-none"
-                  value="true"
-                  id="true"
-                />
-                <Label htmlFor="true">Yes</Label>
+                <RadioGroupItem value="true" id="default-true" />
+                <Label htmlFor="default-true">True</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem
-                  className="w-4 h-4 rounded-full border border-gray-300 checked:bg-blue-600 checked:border-transparent focus:outline-none"
-                  value="false"
-                  id="false"
-                />
-                <Label htmlFor="false">No</Label>
+                <RadioGroupItem value="false" id="default-false" />
+                <Label htmlFor="default-false">False</Label>
               </div>
             </RadioGroup>
           )}
         />
         {errors.setDefault && (
-          <p className="text-red-500 mt-1">{errors.setDefault.message}</p>
+          <p className="text-red-500 ml-4">{errors.setDefault.message}</p>
         )}
       </div>
 
-      <hr className="mb-8" />
-      <Button
-        variant="custom"
-        className="flex items-center justify-start space-x-2"
-        type="submit"
-      >
-        Save Customer
-      </Button>
+      {/* Submit Button */}
+      <Button type="submit">Update Customer</Button>
     </form>
   );
 };
 
-export default CreateCustomer;
+export default UpdateCustomer;

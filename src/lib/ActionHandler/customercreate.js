@@ -79,5 +79,74 @@ export const CreateCustomerHandler = async (formData) => {
   }
 };
 //Update customer
+export const updateCustomerHandler = async (formData) => {
+  const {
+    id,
+    name,
+    email,
+    phone,
+    address,
+    category,
+    openingBalance,
+    dueLimit,
+    Status,
+    setDefault,
+  } = formData;
 
+  try {
+    // Sanitize inputs
+    const sanitizedPhone = validator.trim(phone);
+    const sanitizedStatus = validator.escape(validator.trim(Status));
+    await connectToDB();
+
+    // Fetch the customer document
+    const customer = await Customer.findById(id);
+    if (!customer) {
+      return { success: false, message: "Customer not found" };
+    }
+
+    // Fetch the category document using the category name
+    const categoryDoc = await CustomerCategory.findOne({
+      CategoryName: category,
+    });
+    if (!categoryDoc) {
+      return { success: false, message: "Invalid category" };
+    }
+
+    // Validate setDefault
+    if (setDefault !== "true" && setDefault !== "false") {
+      return { success: false, message: "Invalid value for setDefault" };
+    }
+
+    // Update the customer
+    customer.name = name;
+    customer.email = email;
+    customer.phone = sanitizedPhone;
+    customer.address = address;
+    customer.category = categoryDoc.CategoryName;
+    customer.openingBalance = openingBalance;
+    customer.dueLimit = dueLimit;
+    customer.Status = sanitizedStatus;
+    customer.setDefault = setDefault;
+
+    // Save the updated customer
+    await customer.save();
+
+    return { success: true, message: "Customer updated successfully" };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
 //Delete customer
+export const deleteCustomerHandler = async (id) => {
+  try {
+    await connectToDB();
+    const customer = await Customer.findByIdAndDelete(id);
+    if (!customer) {
+      return { success: false, message: "Customer not found" };
+    }
+    return { success: true, message: "Customer deleted successfully" };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};

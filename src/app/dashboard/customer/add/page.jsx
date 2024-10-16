@@ -1,31 +1,14 @@
 "use client";
 // Dependencies
-import Createcustomer from "@/components/customer/create/createcustomer";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
 import { FaEye } from "react-icons/fa";
 // Internal Import
-import { CreateCustomerHandler } from "@/lib/ActionHandler/customercreate";
-
+import CreateCustomer from "@/components/customer/create/CreateCustomer";
 // Customer Create Form
 const CustomerAddPage = () => {
-  const handleSubmit = async (data, reset) => {
-    try {
-      const result = await CreateCustomerHandler(data);
-      if (result.success) {
-        toast.success(result.message);
-        reset();
-      } else {
-        toast.error(result.message || "Failed to create customer");
-      }
-    } catch (error) {
-      console.error("Error creating customer:", error.message);
-      toast.error("Failed to create customer");
-    }
-  };
-
   return (
     <div className="m-2 h-screen">
       <Card className="p-6 pr-12">
@@ -39,7 +22,7 @@ const CustomerAddPage = () => {
           </Link>
         </div>
         <hr className="mb-4" />
-        <Createcustomer onSubmit={handleSubmit} />
+        <CreateCustomer />
       </Card>
     </div>
   );

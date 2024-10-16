@@ -52,7 +52,7 @@ export const fetchSingleCustomer = async (id) => {
     if (!customer) {
       throw new Error("Customer not found");
     }
-    //console.log("Fetched customer:", customer); // Log fetched customer
+    // console.log("Fetched customer:", customer); // Log fetched customer
     return {
       ...customer,
       _id: customer._id.toString(), // Convert ObjectId to string

@@ -25,7 +25,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaCheck, FaPlus, FaTrash } from "react-icons/fa";
 // Internal Imports
-import Createcustomer from "@/components/customer/create/createcustomer";
+import Createcustomer from "@/components/customer/create/CreateCustomer";
 import { CreateQuotationHandler } from "@/lib/ActionHandler/quotationcreate";
 import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
 

@@ -81,9 +81,11 @@ const CustomerViewPage = () => {
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
+                  Phone
+                </TableCell>
+                <TableCell className=" px-2 py-2">
                   {customerData.phone}
                 </TableCell>
-                <TableCell className=" px-2 py-2">123-456-7890</TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">

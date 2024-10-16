@@ -29,7 +29,7 @@ import { FaEdit, FaEye, FaListOl, FaPlus, FaTrash } from "react-icons/fa";
 
 // Internal import
 import ConfirmationDialog from "@/components/confrimdialog/ConformDialog";
-import AddCustomerCategory from "@/components/customer/category/addcustomercategory";
+import AddCustomerCategory from "@/components/customer/category/AddCustomerCategory";
 import { deleteCategoryHandler } from "@/lib/ActionHandler/cuscatcreate";
 import { fetchCustomerCategory } from "@/lib/FetchHandler/cuscatfetch";
 import { useEffect, useState } from "react";

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { FaListOl } from "react-icons/fa";
 //Internal Dependencies
-import Updatecustomer from "@/components/customer/create/createcustomer";
+import UpdateCustomer from "@/components/customer/create/UpdateCustomer";
 //Customer Edit Page
 const CustomerEditPage = () => {
   return (
@@ -22,7 +22,7 @@ const CustomerEditPage = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Customer Form</CardTitle>
+            <CardTitle>Update Customer</CardTitle>
             <Link href={"/dashboard/customer/"}>
               <Button size="custom" variant="custom">
                 Back to list
@@ -31,7 +31,7 @@ const CustomerEditPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Updatecustomer  />
+          <UpdateCustomer />
         </CardContent>
       </Card>
     </div>

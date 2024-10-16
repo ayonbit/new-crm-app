@@ -26,6 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Suspense, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import {
   FaEdit,
   FaEye,
@@ -34,10 +35,12 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-
 // Internal Dependencies
-import Createcustomer from "@/components/customer/create/createcustomer";
+import ConfirmationDialog from "@/components/confrimdialog/ConformDialog";
+import Createcustomer from "@/components/customer/create/CreateCustomer";
+import { deleteCustomerHandler } from "@/lib/ActionHandler/customercreate"; // Import delete handler
 import { fetchCustomer } from "@/lib/FetchHandler/createcustfetch";
+
 import Link from "next/link";
 
 // Customer List Page
@@ -51,6 +54,9 @@ const CustomerList = () => {
   // For Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  // For delete confirmation dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [customerIdToDelete, setCustomerIdToDelete] = useState(null);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -75,6 +81,24 @@ const CustomerList = () => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteCustomerHandler(customerIdToDelete);
+    if (result.success) {
+      toast.success(result.message);
+      setCustomerData(
+        customerData.filter((cus) => cus._id !== customerIdToDelete)
+      );
+    } else {
+      toast.error(result.message);
+    }
+    setIsDialogOpen(false);
+  };
+
+  const openConfirmationDialog = (id) => {
+    setCustomerIdToDelete(id);
+    setIsDialogOpen(true);
   };
 
   return (
@@ -199,17 +223,21 @@ const CustomerList = () => {
                       </span>
                     </TableCell>
                     <TableCell className=" flex flex-col text-sm font-medium border-gray-300">
-                      <Link href={`/dashboard/customer/${cus._id}`}>
+                      <Link href={`/dashboard/customer/view/${cus._id}`}>
                         <Button variant="view" size="icon">
                           <FaEye size={16} />
                         </Button>
                       </Link>
-                      <Link href={`/dashboard/customer/${cus._id}/edit`}>
+                      <Link href={`/dashboard/customer/edit/${cus._id}`}>
                         <Button variant="edit" size="icon">
                           <FaEdit size={16} />
                         </Button>
                       </Link>
-                      <Button variant="delete" size="icon">
+                      <Button
+                        variant="delete"
+                        size="icon"
+                        onClick={() => openConfirmationDialog(cus._id)}
+                      >
                         <FaTrash size={16} />
                       </Button>
                     </TableCell>
@@ -230,6 +258,12 @@ const CustomerList = () => {
           />
         </CardFooter>
       </Card>
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleDelete}
+        message="Are you sure you want to delete this customer?"
+      />
     </div>
   );
 };
