@@ -1,14 +1,17 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import * as yup from "yup";
-
-// Internal Imports
-import { CreateSupplierHandler } from "@/lib/ActionHandler/SupplierCreate";
+// Internal Dependencies
+import { updateSupplierHandler } from "@/lib/ActionHandler/SupplierCreate";
+import { fetchSingleSupplier } from "@/lib/FetchHandler/CreateSupFetch";
 
 // Define validation schema using yup
 const supplierSchema = yup.object().shape({
@@ -20,7 +23,7 @@ const supplierSchema = yup.object().shape({
   companyName: yup
     .string()
     .min(3, "Name must be at least 3 characters long")
-    .required("Name is required"),
+    .required("Company name is required"),
   companyPhone: yup.string().required("Phone is required"),
   companyAddress: yup.string(),
   openingBalance: yup
@@ -29,37 +32,66 @@ const supplierSchema = yup.object().shape({
     .required("Opening balance is required"),
 });
 
-const CreateSupplier = () => {
+const UpdateSupplier = () => {
+  const { id } = useParams();
+  // Initialize the form
+
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(supplierSchema),
     defaultValues: {
       supplierName: "",
       companyName: "",
+      companyEmail: "",
       companyPhone: "",
       companyAddress: "",
-      companyEmail: "",
       openingBalance: 0,
     },
   });
 
+  // Fetch supplier data by ID and update the form with the fetched values
+  useEffect(() => {
+    const fetchSupplierData = async () => {
+      if (id) {
+        try {
+          const supplier = await fetchSingleSupplier(id);
+
+          if (supplier) {
+            reset({
+              supplierName: supplier.supplierName || "",
+              companyName: supplier.companyName || "",
+              companyEmail: supplier.companyEmail || "",
+              companyPhone: supplier.companyPhone || "",
+              companyAddress: supplier.companyAddress || "",
+              openingBalance: supplier.openingBalance || 0,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching supplier data:", error.message);
+        }
+      }
+    };
+    fetchSupplierData();
+  }, [id, reset]);
+
   // Submit form data
   const onSubmit = async (data) => {
     try {
-      const result = await CreateSupplierHandler(data);
+      const result = await updateSupplierHandler(id, data);
+
       if (result.success) {
         toast.success(result.message);
         reset();
       } else {
-        toast.error(result.message || "Failed to Create Supplier");
+        toast.error(result.message || "Failed to update supplier");
       }
     } catch (error) {
-      console.error("Error Creating Supplier:", error.message);
-      toast.error("Failed to Create Supplier");
+      console.error("Error updating supplier:", error.message);
+      toast.error("Failed to update supplier");
     }
   };
 
@@ -77,18 +109,18 @@ const CreateSupplier = () => {
               {...field}
               type="text"
               id="supplierName"
-              placeholder="Enter Supplier Name"
+              placeholder="Enter name"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
             />
           )}
         />
         {errors.supplierName && (
-          <p className="text-red-500">{errors.supplierName.message}</p>
+          <p className="text-red-500 ml-6">{errors.supplierName.message}</p>
         )}
       </div>
       <div className="flex items-center space-x-2">
         <Label htmlFor="companyName" className="w-1/4 text-lg font-bold">
-          Company Name
+          Company Name <span className="text-red-500">*</span>
         </Label>
         <Controller
           name="companyName"
@@ -104,7 +136,7 @@ const CreateSupplier = () => {
           )}
         />
         {errors.companyName && (
-          <p className="text-red-500">{errors.companyName.message}</p>
+          <p className="text-red-500 ml-4">{errors.companyName.message}</p>
         )}
       </div>
       <div className="flex items-center space-x-2">
@@ -119,11 +151,14 @@ const CreateSupplier = () => {
               {...field}
               type="email"
               id="companyEmail"
-              placeholder="Enter Email"
+              placeholder="Enter email"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
             />
           )}
         />
+        {errors.companyEmail && (
+          <p className="text-red-500 ml-4">{errors.companyEmail.message}</p>
+        )}
       </div>
       <div className="flex items-center space-x-2">
         <Label htmlFor="companyPhone" className="w-1/4 text-lg font-bold">
@@ -137,13 +172,13 @@ const CreateSupplier = () => {
               {...field}
               type="tel"
               id="companyPhone"
-              placeholder="Enter Phone Number"
+              placeholder="Enter phone number"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
             />
           )}
         />
         {errors.companyPhone && (
-          <p className="text-red-500">{errors.companyPhone.message}</p>
+          <p className="text-red-500 ml-4">{errors.companyPhone.message}</p>
         )}
       </div>
       <div className="flex items-center space-x-2">
@@ -157,11 +192,14 @@ const CreateSupplier = () => {
             <Textarea
               {...field}
               id="companyAddress"
-              placeholder="Enter Address"
+              placeholder="Enter address"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
             />
           )}
         />
+        {errors.companyAddress && (
+          <p className="text-red-500 ml-4">{errors.companyAddress.message}</p>
+        )}
       </div>
       <div className="flex items-center space-x-2">
         <Label htmlFor="openingBalance" className="w-1/4 text-lg font-bold">
@@ -175,14 +213,14 @@ const CreateSupplier = () => {
               {...field}
               type="number"
               id="openingBalance"
-              placeholder="Enter Opening Balance"
+              placeholder="Enter opening balance"
               className="w-2/4 p-2 border rounded focus-visible:outline-none"
               style={{ MozAppearance: "textfield" }}
             />
           )}
         />
         {errors.openingBalance && (
-          <p className="text-red-500">{errors.openingBalance.message}</p>
+          <p className="text-red-500 ml-4">{errors.openingBalance.message}</p>
         )}
       </div>
       <hr className="mb-8" />
@@ -191,10 +229,10 @@ const CreateSupplier = () => {
         variant="custom"
         className="flex items-center justify-start space-x-2"
       >
-        Save Supplier
+        Update Supplier
       </Button>
     </form>
   );
 };
 
-export default CreateSupplier;
+export default UpdateSupplier;

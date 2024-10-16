@@ -1,6 +1,6 @@
 "use client";
 // Dependencies
-import Createsupplier from "@/components/supplier/create/createsupplier";
+import CreateSupplier from "@/components/supplier/create/CreateSupplier";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { FaEye } from "react-icons/fa";
 const CustomerAddPage = () => {
   const router = useRouter();
   const handleViewCustomer = () => {
-    router.push("/dashboard/customer");
+    router.push("/dashboard/supplier");
   };
   return (
     <div className="m-2 h-screen">
@@ -26,7 +26,7 @@ const CustomerAddPage = () => {
           </Button>
         </div>
         <hr className="mb-4" />
-        <Createsupplier />
+        <CreateSupplier />
       </Card>
     </div>
   );

@@ -9,24 +9,24 @@ import { useEffect, useState } from "react";
 import { FaListOl } from "react-icons/fa";
 
 //Internal Dependencies
-import { fetchSingleCustomer } from "@/lib/FetchHandler/createcustfetch";
+import { fetchSingleSupplier } from "@/lib/FetchHandler/CreateSupFetch";
 
-//Customer View Page
-const CustomerViewPage = () => {
+//Supplier View Page
+const SupplierViewPage = () => {
   const { id } = useParams();
-  const [customerData, setCustomerData] = useState(null);
+  const [supplierData, setSupplierData] = useState(null);
 
   useEffect(() => {
     if (id) {
-      // Fetch the customer data based on the ID
-      fetchSingleCustomer(id)
-        .then((data) => setCustomerData(data))
+      // Fetch the supplier data based on the ID
+      fetchSingleSupplier(id)
+        .then((data) => setSupplierData(data))
         .catch((error) =>
-          console.error("Error fetching customer data:", error)
+          console.error("Error fetching supplier data:", error)
         );
     }
   }, [id]);
-  if (!customerData) {
+  if (!supplierData) {
     return <div>Loading...</div>;
   }
 
@@ -36,7 +36,7 @@ const CustomerViewPage = () => {
         <CardHeader>
           <CardTitle>
             <div className="flex items-center gap-6 text-2xl font-bold">
-              <FaListOl className="mr-2" /> View Customer Details
+              <FaListOl className="mr-2" /> View Supplier Details
             </div>
           </CardTitle>
         </CardHeader>
@@ -44,8 +44,8 @@ const CustomerViewPage = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Customer Table</CardTitle>
-            <Link href={"/dashboard/customer/"}>
+            <CardTitle>Supplier Table</CardTitle>
+            <Link href={"/dashboard/supplier/"}>
               <Button size="custom" variant="custom">
                 Back to list
               </Button>
@@ -57,10 +57,10 @@ const CustomerViewPage = () => {
             <TableBody>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
-                  Customer Code
+                  Supplier Code
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.customerCode}
+                  {supplierData.companyCode}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -68,7 +68,15 @@ const CustomerViewPage = () => {
                   Name
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.name}
+                  {supplierData.supplierName}
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
+                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
+                  Company Name
+                </TableCell>
+                <TableCell className=" px-2 py-2">
+                  {supplierData.companyName}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -76,7 +84,7 @@ const CustomerViewPage = () => {
                   Email
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.email}
+                  {supplierData.companyEmail}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -84,7 +92,7 @@ const CustomerViewPage = () => {
                   Phone
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.phone}
+                  {supplierData.companyPhone}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -92,47 +100,16 @@ const CustomerViewPage = () => {
                   Address
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.address}
+                  {supplierData.companyAddress}
                 </TableCell>
               </TableRow>
-              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
-                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
-                  Category
-                </TableCell>
-                <TableCell className=" px-2 py-2">
-                  {customerData.category}
-                </TableCell>
-              </TableRow>
+
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
                 <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
                   Balance {/* opening balance */}
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {customerData.openingBalance}
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
-                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
-                  Due Limit
-                </TableCell>
-                <TableCell className=" px-2 py-2">
-                  {customerData.dueLimit}
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
-                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
-                  Status
-                </TableCell>
-                <TableCell className=" px-2 py-2">
-                  {customerData.Status}
-                </TableCell>
-              </TableRow>
-              <TableRow className="border-b border-gray-300 hover:bg-gray-100">
-                <TableCell className="font-bold text-sm border-r border-gray-300 px-2 py-2 bg-gray-50">
-                  Default
-                </TableCell>
-                <TableCell className=" px-2 py-2">
-                  {customerData.setDefault}
+                  {supplierData.openingBalance}
                 </TableCell>
               </TableRow>
               <TableRow className="border-b border-gray-300 hover:bg-gray-100">
@@ -140,7 +117,7 @@ const CustomerViewPage = () => {
                   Update Date
                 </TableCell>
                 <TableCell className=" px-2 py-2">
-                  {new Date(customerData.updatedAt).toLocaleDateString()}
+                  {new Date(supplierData.updatedAt).toLocaleDateString()}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -151,4 +128,4 @@ const CustomerViewPage = () => {
   );
 };
 
-export default CustomerViewPage;
+export default SupplierViewPage;
