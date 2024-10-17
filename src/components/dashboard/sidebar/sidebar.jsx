@@ -133,7 +133,7 @@ const menuItems = [
     dropdown: [
       {
         title: "Accounts",
-        path: "/dashboard/general/accounts",
+        path: "/dashboard/general",
         icons: <FaListOl />,
       },
       {
@@ -195,7 +195,7 @@ const menuItems = [
     dropdown: [
       {
         title: "Payroll Setup",
-        path: "/dashboard/payroll/setup",
+        path: "/dashboard/payroll",
         icons: <FaRegMoneyBillAlt />,
       },
       {
@@ -310,7 +310,7 @@ const menuItems = [
     dropdown: [
       {
         title: "Warehouse Transfer",
-        path: "/dashboard/warehousetransfer",
+        path: "/dashboard/warehouse",
         icons: <FaListOl />,
       },
     ],
@@ -442,7 +442,7 @@ const menuItems = [
     dropdown: [
       {
         title: "Send Sms",
-        path: "/dashboard/sendsms",
+        path: "/dashboard/sms",
         icons: <FaPlus />,
       },
     ],
