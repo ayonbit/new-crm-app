@@ -21,11 +21,13 @@ const CustomerViewPage = () => {
       // Fetch the customer data based on the ID
       fetchSingleCustomer(id)
         .then((data) => setCustomerData(data))
+
         .catch((error) =>
           console.error("Error fetching customer data:", error)
         );
     }
   }, [id]);
+
   if (!customerData) {
     return <div>Loading...</div>;
   }

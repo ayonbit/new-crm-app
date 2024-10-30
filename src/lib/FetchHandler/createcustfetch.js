@@ -3,7 +3,7 @@
 import Customer from "../Model/addcusmod";
 import { connectToDB } from "../dbcon";
 
-//Fetch customer data
+// Fetch customer data
 export const fetchCustomer = async (q, page = 1, limit = 10) => {
   try {
     await connectToDB();
@@ -23,6 +23,7 @@ export const fetchCustomer = async (q, page = 1, limit = 10) => {
     const totalPages = Math.ceil(totalCustomers / limit);
 
     const customers = await Customer.find(filter)
+      .sort({ customerCode: -1 }) // Sort by customerCode in descending order
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
@@ -43,7 +44,7 @@ export const fetchCustomer = async (q, page = 1, limit = 10) => {
   }
 };
 
-//Fetch single customer data
+// Fetch single customer data
 export const fetchSingleCustomer = async (id) => {
   try {
     await connectToDB();
@@ -61,6 +62,6 @@ export const fetchSingleCustomer = async (id) => {
     };
   } catch (error) {
     console.error("Error fetching customer:", error.message);
-    throw new Error("Failed to fetch  customer data");
+    throw new Error("Failed to fetch customer data");
   }
 };

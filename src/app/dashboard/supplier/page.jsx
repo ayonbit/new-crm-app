@@ -247,7 +247,7 @@ const ManageSupplierPage = () => {
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleDelete}
-        message="Are you sure you want to delete this customer?"
+        message="Are you sure you want to delete this supplier?"
       />
     </div>
   );

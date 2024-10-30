@@ -31,7 +31,6 @@ import {
 } from "react-icons/fa";
 //Internal Dependencies
 import { fetchQuotation } from "@/lib/FetchHandler/createquotationfetch";
-
 //Quotation List Page
 const QuotationsList = () => {
   //For Quotation Fetch
@@ -52,7 +51,11 @@ const QuotationsList = () => {
           searchQuery,
           currentPage
         );
-        setQuotationData(quotations);
+        // Sort quotations by quotationId in descending order
+        const sortedQuotations = quotations.sort(
+          (a, b) => b.quotationId - a.quotationId
+        );
+        setQuotationData(sortedQuotations);
         setTotalPages(totalPages);
       } catch (error) {
         console.error("Error fetching quotation data:", error.message);
@@ -142,9 +145,11 @@ const QuotationsList = () => {
                       {quote.payable}
                     </TableCell>
                     <TableCell className="py-2 px-4 text-left">
-                      <Button variant="view" size="icon" className="mr-1">
-                        <FaEye size={16} />
-                      </Button>
+                      <Link href={`/dashboard/quotations/view/${quote._id}`}>
+                        <Button variant="view" size="icon" className="mr-1">
+                          <FaEye size={16} />
+                        </Button>
+                      </Link>
                       <Button variant="edit" size="icon" className="mr-1">
                         <FaEdit size={16} />
                       </Button>

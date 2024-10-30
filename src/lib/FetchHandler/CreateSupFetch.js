@@ -3,7 +3,7 @@
 import Supplier from "../Model/AddSupplierModel";
 import { connectToDB } from "../dbcon";
 
-//Fetch supplier data
+// Fetch supplier data
 export const fetchSupplier = async (q, page = 1, limit = 10) => {
   try {
     await connectToDB();
@@ -12,9 +12,9 @@ export const fetchSupplier = async (q, page = 1, limit = 10) => {
       ? {
           $or: [
             { supplierName: { $regex: q, $options: "i" } },
-            { supplierEmail: { $regex: q, $options: "i" } },
-            { supplierPhone: { $regex: q, $options: "i" } },
-            { supplierCode: { $regex: q, $options: "i" } },
+            { companyEmail: { $regex: q, $options: "i" } },
+            { companyPhone: { $regex: q, $options: "i" } },
+            { companyCode: { $regex: q, $options: "i" } },
           ],
         }
       : {};
@@ -23,6 +23,7 @@ export const fetchSupplier = async (q, page = 1, limit = 10) => {
     const totalPages = Math.ceil(totalSuppliers / limit);
 
     const suppliers = await Supplier.find(filter)
+      .sort({ companyCode: -1 }) // Sort by supplierCode in descending order
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
@@ -43,7 +44,7 @@ export const fetchSupplier = async (q, page = 1, limit = 10) => {
   }
 };
 
-//Fetch single supplier data
+// Fetch single supplier data
 export const fetchSingleSupplier = async (id) => {
   try {
     await connectToDB();
@@ -52,7 +53,6 @@ export const fetchSingleSupplier = async (id) => {
     if (!supplier) {
       throw new Error("Supplier not found");
     }
-    //console.log("Fetched supplier:", supplier); // Log fetched supplier
     return {
       ...supplier,
       _id: supplier._id.toString(), // Convert ObjectId to string
